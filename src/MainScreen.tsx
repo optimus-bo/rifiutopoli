@@ -1,4 +1,4 @@
-import { Grid } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 import { useState } from 'react';
 import Rifiuto, { RifiutoCard } from './Rifiuto';
 import Totale from './Totale';
@@ -36,7 +36,7 @@ export default function MainScreen() {
   }
 
   return (
-    <>
+    <Box>
       <Grid container spacing={2} padding={2} justifyContent="center">
         {rifiuti.map((rifiuto, idx) => {
           return (
@@ -51,6 +51,6 @@ export default function MainScreen() {
         })}
       </Grid>
       <Totale rifiuti={buttati} />
-    </>
+    </Box>
   );
 }
