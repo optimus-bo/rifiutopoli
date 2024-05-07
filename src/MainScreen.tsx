@@ -1,6 +1,6 @@
 import { Grid } from '@mui/material';
 import { useState } from 'react';
-import Rifiuto from './Rifiuto';
+import Rifiuto, { RifiutoCard } from './Rifiuto';
 import Totale from './Totale';
 
 const rifiuti = [
@@ -15,6 +15,10 @@ const rifiuti = [
   {
     img: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fbackendcdn.vivaticket.it%2Fimg_eventi_new%2Fteatri%2FVirtus_Bologna_390x390_6351361aaae6f.png&f=1&nofb=1&ipt=4a385db93ba667dfbc09162a9cdc328eb95e488ab363d13b1fc317eb4566d515&ipo=images',
     nome: 'rifiuto 3',
+  },
+  {
+    img: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.galluranews.org%2Fwp-content%2Fuploads%2F2019%2F07%2F67000914_1208856492650044_7374982047263096832_n.jpg&f=1&nofb=1&ipt=3e78b55166d0eac41b30ceaa0b50d33ba53695d32722c1a644a1c52be884b341&ipo=images',
+    nome: 'Rifiuto 4',
   },
 ];
 
@@ -33,11 +37,15 @@ export default function MainScreen() {
 
   return (
     <>
-      <Grid container spacing={2} padding={2}>
+      <Grid container spacing={2} padding={2} justifyContent="center">
         {rifiuti.map((rifiuto, idx) => {
           return (
             <Grid item key={idx} md={3}>
-              <Rifiuto rifiuto={rifiuto} key={idx} butta={(nome, peso) => aggiorna(nome, peso)} />
+              {idx % 2 === 0 ? (
+                <Rifiuto rifiuto={rifiuto} key={idx} butta={(nome, peso) => aggiorna(nome, peso)} />
+              ) : (
+                <RifiutoCard rifiuto={rifiuto} key={idx} butta={(nome, peso) => aggiorna(nome, peso)} />
+              )}
             </Grid>
           );
         })}
