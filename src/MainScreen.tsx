@@ -1,5 +1,7 @@
 import { Grid } from '@mui/material';
+import { useState } from 'react';
 import Rifiuto from './Rifiuto';
+import Totale from './Totale';
 
 const rifiuti = [
   {
@@ -17,15 +19,30 @@ const rifiuti = [
 ];
 
 export default function MainScreen() {
+  const [buttati, setButtati] = useState<{ nome: string; qt: number }[]>([]);
+
+  function aggiorna(nome: string, aggiunta: number) {
+    const filtrati = buttati.filter((rifiuto) => rifiuto.nome !== nome);
+    const attuale = buttati.find((rifiuto) => rifiuto.nome === nome) ?? {
+      nome: nome,
+      qt: 0.0,
+    };
+    attuale.qt = attuale.qt + aggiunta;
+    setButtati([...filtrati, attuale]);
+  }
+
   return (
-    <Grid container spacing={2}>
-      {rifiuti.map((rifiuto, idx) => {
-        return (
-          <Grid item key={idx} md={3}>
-            <Rifiuto rifiuto={rifiuto} key={idx} butta={() => {}} />
-          </Grid>
-        );
-      })}
-    </Grid>
+    <>
+      <Grid container spacing={2} padding={2}>
+        {rifiuti.map((rifiuto, idx) => {
+          return (
+            <Grid item key={idx} md={3}>
+              <Rifiuto rifiuto={rifiuto} key={idx} butta={(nome, peso) => aggiorna(nome, peso)} />
+            </Grid>
+          );
+        })}
+      </Grid>
+      <Totale rifiuti={buttati} />
+    </>
   );
 }

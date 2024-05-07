@@ -45,7 +45,7 @@ export default function Rifiuto({ rifiuto, butta }: RifiutoProps) {
           ),
         }}
       />
-      <Button variant="contained" onClick={() => butta(rifiuto.nome, value ?? 0)} disabled={value !== null}>
+      <Button variant="contained" onClick={() => butta(rifiuto.nome, value ?? 0)} disabled={value === null}>
         Butta
       </Button>
     </Stack>
