@@ -27,7 +27,14 @@ export default function RifiutoFancy({ rifiuto, butta }: RifiutoFancyProps) {
   }
 
   return (
-    <Stack flexDirection="column" spacing={2}>
+    <Stack
+      flexDirection="column"
+      spacing={2}
+      sx={{
+        height: 500,
+        width: 350,
+      }}
+    >
       <FancyImg src={rifiuto.imgSrc} />
       <Typography variant="h5" fontWeight="bold" sx={{ textDecoration: 'underline' }} textAlign="left">
         {rifiuto.nome}
