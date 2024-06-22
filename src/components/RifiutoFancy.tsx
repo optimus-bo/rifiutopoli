@@ -21,6 +21,7 @@ export default function RifiutoFancy({ rifiuto, butta }: RifiutoFancyProps) {
       }}
     >
       <Box
+        id="CONTAINER"
         sx={{
           display: 'flex',
           alignItems: 'center',

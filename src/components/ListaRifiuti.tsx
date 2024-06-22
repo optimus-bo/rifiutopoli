@@ -1,4 +1,4 @@
-import { Stack } from '@mui/material';
+import { Grid } from '@mui/material';
 import { Rifiuto } from '../api/rifiuti';
 import RifiutoFancy from './RifiutoFancy';
 
@@ -9,10 +9,16 @@ type ListaRifiuti = {
 
 export default function ListaRifiuti({ rifiuti, onSubmit }: ListaRifiuti) {
   return (
-    <Stack direction="row" spacing={4} flexWrap="wrap" justifyContent="center">
+    // <Stack direction="row" spacing={4} flexWrap="wrap" justifyContent="center">
+    <Grid container sx={{ width: '100%' }}>
       {rifiuti.map((rifiuto, idx) => {
-        return <RifiutoFancy rifiuto={rifiuto} key={idx} butta={(rifiuto, peso) => onSubmit(rifiuto, peso)} />;
+        return (
+          <Grid item padding={2}>
+            <RifiutoFancy rifiuto={rifiuto} key={idx} butta={(rifiuto, peso) => onSubmit(rifiuto, peso)} />
+          </Grid>
+        );
       })}
-    </Stack>
+      {/* </Stack> */}
+    </Grid>
   );
 }
