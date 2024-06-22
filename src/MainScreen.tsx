@@ -47,7 +47,7 @@ export default function MainScreen() {
   }
 
   return (
-    <Box padding={2}>
+    <Box padding={2} sx={{ width: '100%' }}>
       <Stack spacing={1} direction={isMobile ? 'column' : 'row'}>
         <ListaRifiuti rifiuti={rifiuti} onSubmit={aggiorna} />
         <Totale rifiuti={buttati} />
