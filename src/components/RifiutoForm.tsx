@@ -1,4 +1,5 @@
-import { Button, Stack, Typography } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Box, Button, Slider, Stack, Typography } from '@mui/material';
 import { useState } from 'react';
 import { Rifiuto } from '../api/rifiuti';
 import NumberInput from './NumberInput';
@@ -16,13 +17,29 @@ export default function RifiutoForm({ rifiuto, butta }: RifiutoFormProps) {
   }
 
   return (
-    <Stack spacing={1}>
+    <Stack spacing={2}>
       <Typography variant="h5" fontWeight="bold" sx={{ textDecoration: 'underline' }} textAlign="left">
         {rifiuto.nome}
       </Typography>
 
-      <NumberInput label="Kg da buttare" value={value} onChange={(newvalue) => setValue(newvalue)} />
-      <Button variant="contained" onClick={eseguiRigstrazione} disabled={value === null}>
+      <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
+        <NumberInput label="Kg da buttare" value={value} onChange={(newvalue) => setValue(newvalue)} />
+        <Slider
+          value={value ?? 0}
+          onChange={(_, value) => setValue(typeof value === 'number' ? value : value[0])}
+          step={10}
+          min={0}
+          max={1000}
+        />
+      </Box>
+
+      <Button
+        variant="contained"
+        onClick={eseguiRigstrazione}
+        disabled={value === null}
+        startIcon={<DeleteIcon />}
+        sx={{ borderRadius: 3 }}
+      >
         Butta
       </Button>
     </Stack>

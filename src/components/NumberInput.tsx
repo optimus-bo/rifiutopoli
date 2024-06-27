@@ -1,5 +1,5 @@
 import { TextField } from '@mui/material';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 const emptyValue = '';
 
@@ -18,10 +18,16 @@ export default function NumberInput({ label, value, onChange }: NumberInputProps
       setStringValue(numberValue.toString());
       onChange(numberValue);
     } else {
-      setStringValue('');
+      setStringValue(emptyValue);
       onChange(null);
     }
   }
+
+  useEffect(() => {
+    if (value !== null && value.toString() !== stringValue) {
+      setStringValue(value.toString());
+    }
+  }, [value]);
 
   return (
     <TextField
