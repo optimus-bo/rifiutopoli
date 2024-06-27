@@ -13,7 +13,7 @@ export default function ListaRifiuti({ rifiuti, onSubmit }: ListaRifiuti) {
     <Grid container sx={{ width: '100%' }}>
       {rifiuti.map((rifiuto, idx) => {
         return (
-          <Grid item padding={2}>
+          <Grid key={idx} item padding={2}>
             <RifiutoFancy rifiuto={rifiuto} key={idx} butta={(rifiuto, peso) => onSubmit(rifiuto, peso)} />
           </Grid>
         );
