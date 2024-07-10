@@ -1,8 +1,8 @@
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
-import { Button, IconButton, Stack, TextField, Typography } from '@mui/material';
-import { ChangeEvent, useState } from 'react';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Box, Button, Slider, Stack, Typography } from '@mui/material';
+import { useState } from 'react';
 import { Rifiuto } from '../api/rifiuti';
+import NumberInput from './NumberInput';
 
 type RifiutoFormProps = {
   rifiuto: Rifiuto;
@@ -11,44 +11,35 @@ type RifiutoFormProps = {
 export default function RifiutoForm({ rifiuto, butta }: RifiutoFormProps) {
   const [value, setValue] = useState<number | null>(null);
 
-  function onChange(event: ChangeEvent<HTMLInputElement>) {
-    const numberValue: number = parseFloat(event.target.value);
-    if (!isNaN(numberValue)) {
-      setValue(numberValue);
-    } else {
-      setValue(null);
-    }
-  }
-
   function eseguiRigstrazione() {
     butta(rifiuto, value ?? 0);
     setValue(null);
   }
+
   return (
-    <Stack spacing={1}>
+    <Stack spacing={2}>
       <Typography variant="h5" fontWeight="bold" sx={{ textDecoration: 'underline' }} textAlign="left">
         {rifiuto.nome}
       </Typography>
 
-      <TextField
-        label="Kg da buttare"
-        variant="outlined"
-        value={value}
-        onChange={onChange}
-        InputProps={{
-          startAdornment: (
-            <IconButton onClick={() => setValue((value ?? 0) - 1)}>
-              <RemoveCircleOutlineIcon />
-            </IconButton>
-          ),
-          endAdornment: (
-            <IconButton onClick={() => setValue((value ?? 0) + 1)}>
-              <AddCircleOutlineIcon />
-            </IconButton>
-          ),
-        }}
-      />
-      <Button variant="contained" onClick={eseguiRigstrazione} disabled={value === null}>
+      <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
+        <NumberInput label="Kg da buttare" value={value} onChange={(newvalue) => setValue(newvalue)} />
+        <Slider
+          value={value ?? 0}
+          onChange={(_, value) => setValue(typeof value === 'number' ? value : value[0])}
+          step={10}
+          min={0}
+          max={1000}
+        />
+      </Box>
+
+      <Button
+        variant="contained"
+        onClick={eseguiRigstrazione}
+        disabled={value === null}
+        startIcon={<DeleteIcon />}
+        sx={{ borderRadius: 3 }}
+      >
         Butta
       </Button>
     </Stack>
