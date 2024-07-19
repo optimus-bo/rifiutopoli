@@ -6,7 +6,7 @@ from ..db import BaseEntity
 
 
 class Rifiuto(BaseEntity):
-    __tablename__ = "prenotabile"
+    __tablename__ = "rifiuto"
     codice_cer: Mapped[str] = mapped_column(String, primary_key=True)
     nome: Mapped[str] = mapped_column(String)
     descrizione: Mapped[str] = mapped_column(String)
