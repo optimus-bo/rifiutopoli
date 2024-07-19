@@ -22,8 +22,10 @@ class RifiutoRead(BaseModel):
         from_attributes = True
 
 
-class RifiutoUpdate(BaseModel):
+class RifiutoCreate(BaseModel):
+    codice_cer: str
     nome: Optional[str] = None
+    descrizione: str
 
     class Config:
         orm_mode = True
