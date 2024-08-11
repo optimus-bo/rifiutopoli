@@ -1,7 +1,18 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+from fastapi import (
+    HTTPException,
+    status,
+)
 from .rifiuto_schemi import *
+
+
+class RifiutoNotFound(HTTPException):
+    def __init__(self, codice_cer: str):
+        super().__init__(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Il rifiuto con codice CER {codice_cer} non è stato trovato",
+        )
 
 
 async def find_rifiuto(session: AsyncSession, codice_cer: str):
@@ -11,7 +22,7 @@ async def find_rifiuto(session: AsyncSession, codice_cer: str):
     rifiuto = result.scalars().first()
 
     if rifiuto is None:
-        pass
+        raise RifiutoNotFound(codice_cer)
     return rifiuto
 
 
