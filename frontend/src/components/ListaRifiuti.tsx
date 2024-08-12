@@ -9,7 +9,6 @@ type ListaRifiuti = {
 
 export default function ListaRifiuti({ rifiuti, onSubmit }: ListaRifiuti) {
   return (
-    // <Stack direction="row" spacing={4} flexWrap="wrap" justifyContent="center">
     <Grid container sx={{ width: '100%' }}>
       {rifiuti.map((rifiuto, idx) => {
         return (
@@ -18,7 +17,6 @@ export default function ListaRifiuti({ rifiuti, onSubmit }: ListaRifiuti) {
           </Grid>
         );
       })}
-      {/* </Stack> */}
     </Grid>
   );
 }
