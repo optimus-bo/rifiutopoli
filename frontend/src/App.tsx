@@ -1,7 +1,7 @@
 import { OptimusUiApp } from 'optimus-bo-ui';
 import { BrowserRouter } from 'react-router-dom';
 import './App.css';
-import MainScreen from './MainScreen';
+import MainScreen from './screens/MainScreen';
 
 function App() {
   return (
@@ -16,6 +16,9 @@ function App() {
                 navbarStyling: 'solid',
               },
             },
+          }}
+          reactQueryConfiguration={{
+            configure: true,
           }}
         >
           <MainScreen />
