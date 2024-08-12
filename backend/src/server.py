@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .rifiuti.rifiuto_router import router_rifiuti
+from .raccolte.raccolte_router import router_raccolte
 from .db import crea_tabelle
 
 
@@ -23,3 +24,4 @@ async def startup_event():
 app.add_event_handler("startup", startup_event)
 
 app.include_router(router_rifiuti, prefix="/api", tags=["rifiuti"])
+app.include_router(router_raccolte, prefix="/api", tags=["raccolte"])
