@@ -1,6 +1,7 @@
 import { OptimusUiApp } from 'optimus-bo-ui';
 import { BrowserRouter } from 'react-router-dom';
 import './App.css';
+import Layout from './components/Layout';
 import MainScreen from './screens/MainScreen';
 
 function App() {
@@ -9,19 +10,15 @@ function App() {
       <BrowserRouter>
         <OptimusUiApp
           layoutConfiguration={{
-            configure: true,
-            layoutConfig: {
-              layoutType: 'default',
-              navbarConfig: {
-                navbarStyling: 'solid',
-              },
-            },
+            configure: false,
           }}
           reactQueryConfiguration={{
             configure: true,
           }}
         >
-          <MainScreen />
+          <Layout>
+            <MainScreen />
+          </Layout>
         </OptimusUiApp>
       </BrowserRouter>
     </div>
