@@ -11,7 +11,7 @@ class PesoInvalido(HTTPException):
     def __init__(self):
         super().__init__(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Ogni raccolta di rifiuti deve raccogliere un numero positivi di chili di rifiuti",
+            detail=f"Ogni raccolta di rifiuti deve raccogliere un numero positivo di chili di rifiuti",
         )
 
 
