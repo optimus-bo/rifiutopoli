@@ -3,7 +3,7 @@ import { Button, Card, CardActionArea, CardContent, CardHeader, Divider, Typogra
 import { useMutation } from '@tanstack/react-query';
 import { useToast } from 'optimus-bo-ui/dist/components/Toast';
 import { Fragment } from 'react/jsx-runtime';
-import { Raccolta, registraRaccolte } from '../api/raccolte';
+import { Raccolta, registraRaccolte } from '../../api/raccolte';
 
 type MenuRaccoltaProps = {
   raccolte: Raccolta[];

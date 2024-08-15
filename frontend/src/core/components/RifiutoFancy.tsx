@@ -1,5 +1,5 @@
 import { Card, CardContent, CardMedia } from '@mui/material';
-import { Rifiuto } from '../api/rifiuti';
+import { Rifiuto } from '../../api/rifiuti';
 import RifiutoForm from './RifiutoForm';
 
 const imgHeight = 300;

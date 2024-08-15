@@ -2,7 +2,7 @@ import { Box } from '@mui/material';
 import { useState } from 'react';
 import { Raccolta } from '../api/raccolte';
 import { Rifiuto } from '../api/rifiuti';
-import ListaRifiuti from '../components/ListaRifiuti';
+import ListaRifiuti from '../core/components/ListaRifiuti';
 
 const rifiuti: Rifiuto[] = [
   {

@@ -1,5 +1,5 @@
 import { Grid } from '@mui/material';
-import { Rifiuto } from '../api/rifiuti';
+import { Rifiuto } from '../../api/rifiuti';
 import RifiutoFancy from './RifiutoFancy';
 
 type ListaRifiuti = {

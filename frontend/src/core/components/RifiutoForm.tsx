@@ -1,18 +1,22 @@
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Box, Button, Slider, Stack, Typography } from '@mui/material';
 import { useState } from 'react';
-import { Rifiuto } from '../api/rifiuti';
+import { Rifiuto } from '../../api/rifiuti';
+import { useRifiuti } from '../RifiutiContext';
 import NumberInput from './NumberInput';
 
 type RifiutoFormProps = {
   rifiuto: Rifiuto;
   butta: (nome: Rifiuto, peso: number) => void;
 };
+
 export default function RifiutoForm({ rifiuto, butta }: RifiutoFormProps) {
   const [value, setValue] = useState<number | null>(null);
+  const { raccogliRifiuto } = useRifiuti();
 
   function eseguiRigstrazione() {
-    butta(rifiuto, value ?? 0);
+    // butta(rifiuto, value ?? 0);
+    raccogliRifiuto(rifiuto, value ?? 0);
     setValue(null);
   }
 

@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { routes } from '../routes';
 
-const pagine = [routes.documenti, routes.rifiuti, routes.impostazioni];
+const pagine = [routes.cestino, routes.rifiuti, routes.impostazioni];
 
 export default function Navigation() {
   // parte dall'indice 1 che è la pagina centrale, la home page
