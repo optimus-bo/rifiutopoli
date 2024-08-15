@@ -6,15 +6,14 @@ const imgHeight = 300;
 
 type RifiutoFancyProps = {
   rifiuto: Rifiuto;
-  butta: (nome: Rifiuto, peso: number) => void;
 };
 
-export default function RifiutoFancy({ rifiuto, butta }: RifiutoFancyProps) {
+export default function RifiutoFancy({ rifiuto }: RifiutoFancyProps) {
   return (
     <Card elevation={8}>
       <CardMedia sx={{ height: imgHeight }} image={rifiuto.imgSrc} />
       <CardContent>
-        <RifiutoForm rifiuto={rifiuto} butta={butta} />
+        <RifiutoForm rifiuto={rifiuto} />
       </CardContent>
     </Card>
   );

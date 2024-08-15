@@ -1,5 +1,6 @@
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Box, Button, Slider, Stack, Typography } from '@mui/material';
+import { useToast } from 'optimus-bo-ui/dist/components/Toast';
 import { useState } from 'react';
 import { Rifiuto } from '../../api/rifiuti';
 import { useRifiuti } from '../RifiutiContext';
@@ -7,17 +8,18 @@ import NumberInput from './NumberInput';
 
 type RifiutoFormProps = {
   rifiuto: Rifiuto;
-  butta: (nome: Rifiuto, peso: number) => void;
 };
 
-export default function RifiutoForm({ rifiuto, butta }: RifiutoFormProps) {
+export default function RifiutoForm({ rifiuto }: RifiutoFormProps) {
   const [value, setValue] = useState<number | null>(null);
   const { raccogliRifiuto } = useRifiuti();
+  const { Component: ToastComponent, showToast } = useToast({});
 
   function eseguiRigstrazione() {
     // butta(rifiuto, value ?? 0);
     raccogliRifiuto(rifiuto, value ?? 0);
     setValue(null);
+    showToast({ severity: 'success', text: 'Rifiuto aggiunto al cestino' });
   }
 
   return (
@@ -49,6 +51,8 @@ export default function RifiutoForm({ rifiuto, butta }: RifiutoFormProps) {
       >
         Butta
       </Button>
+
+      {ToastComponent}
     </Stack>
   );
 }
