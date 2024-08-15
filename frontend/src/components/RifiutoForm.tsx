@@ -21,6 +21,9 @@ export default function RifiutoForm({ rifiuto, butta }: RifiutoFormProps) {
       <Typography variant="h5" fontWeight="bold" sx={{ textDecoration: 'underline' }} textAlign="left">
         {rifiuto.nome}
       </Typography>
+      <Typography variant="caption" textAlign="left">
+        CER: {rifiuto.codice_cer}
+      </Typography>
 
       <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
         <NumberInput label="Kg da buttare" value={value} onChange={(newvalue) => setValue(newvalue)} />
