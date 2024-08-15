@@ -24,6 +24,9 @@ export default function NumberInput({ label, value, onChange }: NumberInputProps
   }
 
   useEffect(() => {
+    if (value === null) {
+      setStringValue(emptyValue);
+    }
     if (value !== null && value.toString() !== stringValue) {
       setStringValue(value.toString());
     }

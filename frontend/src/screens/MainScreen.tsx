@@ -1,9 +1,10 @@
 import { Box, Stack } from '@mui/material';
 import { useDeviceFeatures } from 'optimus-bo-ui';
 import { useState } from 'react';
-import Totale from './Totale';
-import { Rifiuto } from './api/rifiuti';
-import ListaRifiuti from './components/ListaRifiuti';
+import { Raccolta } from '../api/raccolte';
+import { Rifiuto } from '../api/rifiuti';
+import ListaRifiuti from '../components/ListaRifiuti';
+import MenuRaccolta from '../components/MenuRaccolta';
 
 const rifiuti: Rifiuto[] = [
   {
@@ -33,24 +34,25 @@ const rifiuti: Rifiuto[] = [
 ];
 
 export default function MainScreen() {
-  const [buttati, setButtati] = useState<{ nome: string; qt: number }[]>([]);
+  const [buttati, setButtati] = useState<Raccolta[]>([]);
   const { isMobile } = useDeviceFeatures();
 
   function aggiorna(r: Rifiuto, aggiunta: number) {
-    const filtrati = buttati.filter((rifiuto) => rifiuto.nome !== r.nome);
-    const attuale = buttati.find((rifiuto) => rifiuto.nome === r.nome) ?? {
-      nome: r.nome,
-      qt: 0.0,
+    const raccolta_rifiuto: Raccolta = buttati.find((raccolta) => raccolta.rifiuto.codice_cer === r.codice_cer) ?? {
+      rifiuto: r,
+      peso: 0.0,
     };
-    attuale.qt = attuale.qt + aggiunta;
-    setButtati([...filtrati, attuale]);
+    const altre = buttati.filter((raccolta) => raccolta.rifiuto.codice_cer !== r.codice_cer);
+
+    raccolta_rifiuto.peso = raccolta_rifiuto.peso + aggiunta;
+    setButtati([...altre, raccolta_rifiuto]);
   }
 
   return (
     <Box padding={2} sx={{ width: '100%' }}>
       <Stack spacing={1} direction={isMobile ? 'column' : 'row'}>
         <ListaRifiuti rifiuti={rifiuti} onSubmit={aggiorna} />
-        <Totale rifiuti={buttati} />
+        <MenuRaccolta raccolte={buttati} />
       </Stack>
     </Box>
   );
