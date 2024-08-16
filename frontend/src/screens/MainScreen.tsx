@@ -1,10 +1,8 @@
-import { Box, Stack } from '@mui/material';
-import { useDeviceFeatures } from 'optimus-bo-ui';
+import { Box } from '@mui/material';
 import { useState } from 'react';
 import { Raccolta } from '../api/raccolte';
 import { Rifiuto } from '../api/rifiuti';
 import ListaRifiuti from '../components/ListaRifiuti';
-import MenuRaccolta from '../components/MenuRaccolta';
 
 const rifiuti: Rifiuto[] = [
   {
@@ -35,7 +33,6 @@ const rifiuti: Rifiuto[] = [
 
 export default function MainScreen() {
   const [buttati, setButtati] = useState<Raccolta[]>([]);
-  const { isMobile } = useDeviceFeatures();
 
   function aggiorna(r: Rifiuto, aggiunta: number) {
     const raccolta_rifiuto: Raccolta = buttati.find((raccolta) => raccolta.rifiuto.codice_cer === r.codice_cer) ?? {
@@ -49,11 +46,8 @@ export default function MainScreen() {
   }
 
   return (
-    <Box padding={2} sx={{ width: '100%' }}>
-      <Stack spacing={1} direction={isMobile ? 'column' : 'row'}>
-        <ListaRifiuti rifiuti={rifiuti} onSubmit={aggiorna} />
-        <MenuRaccolta raccolte={buttati} />
-      </Stack>
+    <Box padding={2} sx={{ width: '100%', display: 'flex' }}>
+      <ListaRifiuti rifiuti={rifiuti} onSubmit={aggiorna} />
     </Box>
   );
 }
