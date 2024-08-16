@@ -24,7 +24,7 @@ function App() {
             <Layout>
               <Routes>
                 <Route path={routes.rifiuti} element={<MainScreen />} />
-                <Route path={routes.documenti} element={<SettingScreen />} />
+                <Route path={routes.impostazioni} element={<SettingScreen />} />
                 <Route path={routes.cestino} element={<TrashScreen />} />
               </Routes>
             </Layout>

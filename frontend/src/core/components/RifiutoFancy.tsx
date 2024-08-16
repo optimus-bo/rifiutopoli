@@ -3,6 +3,7 @@ import { Rifiuto } from '../../api/rifiuti';
 import RifiutoForm from './RifiutoForm';
 
 const imgHeight = 300;
+export const defaultCardElevation = 8;
 
 type RifiutoFancyProps = {
   rifiuto: Rifiuto;
@@ -10,7 +11,7 @@ type RifiutoFancyProps = {
 
 export default function RifiutoFancy({ rifiuto }: RifiutoFancyProps) {
   return (
-    <Card elevation={8}>
+    <Card elevation={defaultCardElevation}>
       <CardMedia sx={{ height: imgHeight }} image={rifiuto.imgSrc} />
       <CardContent>
         <RifiutoForm rifiuto={rifiuto} />
