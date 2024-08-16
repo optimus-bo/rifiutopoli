@@ -9,12 +9,13 @@ import { routes } from '../routes';
 const pagine = [routes.documenti, routes.rifiuti, routes.impostazioni];
 
 export default function Navigation() {
-  const [value, setValue] = useState(1);
+  // parte dall'indice 1 che è la pagina centrale, la home page
+  const [screen, setScreen] = useState(1);
   const navigate = useNavigate();
 
-  function cambiaPagina(idx: number) {
-    setValue(idx);
-    navigate(pagine[idx]);
+  function cambiaPagina(newScreen: number) {
+    setScreen(newScreen);
+    navigate(pagine[newScreen]);
   }
 
   return (
@@ -31,7 +32,7 @@ export default function Navigation() {
       }}
       elevation={4}
     >
-      <BottomNavigation showLabels value={value} onChange={(event, newValue) => cambiaPagina(newValue)}>
+      <BottomNavigation showLabels value={screen} onChange={(event, newValue) => cambiaPagina(newValue)}>
         <BottomNavigationAction label="Cestino" icon={<DeleteIcon />} />
         <BottomNavigationAction label="Home" icon={<HomeIcon />} />
         <BottomNavigationAction label="Admin" icon={<HandymanIcon />} />
