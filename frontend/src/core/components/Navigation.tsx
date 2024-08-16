@@ -4,7 +4,6 @@ import HomeIcon from '@mui/icons-material/Home';
 import { BottomNavigation, BottomNavigationAction, Paper } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useRifiuti } from '../RifiutiContext';
 import { routes } from '../routes';
 
 const pagine = [routes.cestino, routes.rifiuti, routes.impostazioni];
@@ -13,7 +12,6 @@ export default function Navigation() {
   // parte dall'indice 1 che è la pagina centrale, la home page
   const [screen, setScreen] = useState(1);
   const navigate = useNavigate();
-  const { rifiutiRaccolti } = useRifiuti();
 
   function cambiaPagina(newScreen: number) {
     setScreen(newScreen);
