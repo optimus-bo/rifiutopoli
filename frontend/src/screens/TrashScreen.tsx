@@ -1,19 +1,18 @@
 import RestoreFromTrashIcon from '@mui/icons-material/RestoreFromTrash';
-import { Button, Card, CardActionArea, CardContent, CardHeader, Divider, Typography } from '@mui/material';
+import { Button, Card, CardActionArea, CardContent, CardHeader, Divider } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
 import { useToast } from 'optimus-bo-ui/dist/components/Toast';
-import { Fragment } from 'react/jsx-runtime';
-import { Raccolta, registraRaccolte } from '../api/raccolte';
+import { registraRaccolte } from '../api/raccolte';
+import { useRifiuti } from '../core/RifiutiContext';
+import CardRaccolta from '../core/components/CardRaccolta';
 
-type MenuRaccoltaProps = {
-  raccolte: Raccolta[];
-};
-
-export default function MenuRaccolta({ raccolte }: MenuRaccoltaProps) {
+export default function TrashScreen() {
+  const { rifiutiRaccolti } = useRifiuti();
   const { Component: ToastComponent, showToast } = useToast({});
+
   const { mutate } = useMutation({
     mutationFn: () => {
-      return registraRaccolte(raccolte);
+      return registraRaccolte(rifiutiRaccolti);
     },
     onSuccess: () => {
       showToast({ severity: 'success', text: 'Raccolta registrata correttamente' });
@@ -24,28 +23,22 @@ export default function MenuRaccolta({ raccolte }: MenuRaccoltaProps) {
   });
 
   return (
-    <Card variant="outlined" sx={{ width: 350 }}>
+    <Card variant="outlined" sx={{ width: '100%', maxWidth: 900 }}>
       <CardHeader title="Rifiuti registrati" />
       <Divider />
       <CardContent>
-        {raccolte.map((raccolta, idx) => {
-          return (
-            <Fragment key={idx}>
-              <Typography textAlign="left">- {raccolta.rifiuto.nome}</Typography>
-              <Typography variant="subtitle2" textAlign="left" ml={2}>
-                {raccolta.peso} Kg
-              </Typography>
-            </Fragment>
-          );
+        {rifiutiRaccolti.map((raccolta, idx) => {
+          return <CardRaccolta key={idx} raccolta={raccolta}></CardRaccolta>;
         })}
       </CardContent>
+      <Divider />
 
-      <CardActionArea>
+      <CardActionArea sx={{ padding: 1 }}>
         <Button
           startIcon={<RestoreFromTrashIcon />}
           variant="contained"
           onClick={() => mutate()}
-          disabled={raccolte.length === 0}
+          disabled={rifiutiRaccolti.length === 0}
         >
           Conferma raccolta
         </Button>

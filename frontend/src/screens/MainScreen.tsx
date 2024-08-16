@@ -1,8 +1,6 @@
 import { Box } from '@mui/material';
-import { useState } from 'react';
-import { Raccolta } from '../api/raccolte';
 import { Rifiuto } from '../api/rifiuti';
-import ListaRifiuti from '../components/ListaRifiuti';
+import ListaRifiuti from '../core/components/ListaRifiuti';
 
 const rifiuti: Rifiuto[] = [
   {
@@ -32,22 +30,9 @@ const rifiuti: Rifiuto[] = [
 ];
 
 export default function MainScreen() {
-  const [buttati, setButtati] = useState<Raccolta[]>([]);
-
-  function aggiorna(r: Rifiuto, aggiunta: number) {
-    const raccolta_rifiuto: Raccolta = buttati.find((raccolta) => raccolta.rifiuto.codice_cer === r.codice_cer) ?? {
-      rifiuto: r,
-      peso: 0.0,
-    };
-    const altre = buttati.filter((raccolta) => raccolta.rifiuto.codice_cer !== r.codice_cer);
-
-    raccolta_rifiuto.peso = raccolta_rifiuto.peso + aggiunta;
-    setButtati([...altre, raccolta_rifiuto]);
-  }
-
   return (
     <Box padding={2} sx={{ width: '100%', display: 'flex' }}>
-      <ListaRifiuti rifiuti={rifiuti} onSubmit={aggiorna} />
+      <ListaRifiuti rifiuti={rifiuti} />
     </Box>
   );
 }
