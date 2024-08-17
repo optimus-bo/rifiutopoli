@@ -15,3 +15,7 @@ export type RifiutoCreate = {
 export async function registraRifiuto(rifiuto: RifiutoCreate) {
   return backendClient.post('/rifiuti', rifiuto);
 }
+
+export async function getRifiuti(): Promise<Rifiuto[]> {
+  return (await backendClient.get('/rifiuti')).data;
+}
