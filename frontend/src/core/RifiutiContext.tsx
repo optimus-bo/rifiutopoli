@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useContext, useState } from 'react';
+import { createContext, PropsWithChildren, useContext, useEffect, useState } from 'react';
 import { Raccolta } from '../api/raccolte';
 import { Rifiuto } from '../api/rifiuti';
 
@@ -14,8 +14,19 @@ const RifiutiContext = createContext<UseRifiutiReturn>({
   rimuoviRifiuto: () => {},
 });
 
+const raccolteKey = 'raccolte';
+
+function storeRaccolte(raccolte: Raccolta[]) {
+  localStorage.setItem(raccolteKey, JSON.stringify(raccolte));
+}
+
+function loadRaccolte() {
+  const raccolte = localStorage.getItem(raccolteKey);
+  return raccolte ? JSON.parse(raccolte) : [];
+}
+
 export default function RifiutiContextProvider({ children }: PropsWithChildren) {
-  const [rifiutiRaccolti, setRifiutiRaccolti] = useState<Raccolta[]>([]);
+  const [rifiutiRaccolti, setRifiutiRaccolti] = useState<Raccolta[]>(loadRaccolte());
 
   function raccogliRifiuto(rifiuto: Rifiuto, peso: number) {
     // inizializza una raccolta per questo rifiuto
@@ -37,6 +48,10 @@ export default function RifiutiContextProvider({ children }: PropsWithChildren) 
 
     setRifiutiRaccolti(altre);
   }
+
+  useEffect(() => {
+    storeRaccolte(rifiutiRaccolti);
+  }, [rifiutiRaccolti]);
 
   return (
     <RifiutiContext.Provider value={{ rifiutiRaccolti, raccogliRifiuto, rimuoviRifiuto }}>
