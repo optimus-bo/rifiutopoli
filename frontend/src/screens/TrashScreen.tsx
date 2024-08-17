@@ -1,5 +1,5 @@
 import RestoreFromTrashIcon from '@mui/icons-material/RestoreFromTrash';
-import { Button, Card, CardActionArea, CardContent, CardHeader, Divider } from '@mui/material';
+import { Button, Card, CardActionArea, CardContent, CardHeader, Divider, Stack } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
 import { useToast } from 'optimus-bo-ui/dist/components/Toast';
 import { registraRaccolte } from '../api/raccolte';
@@ -27,9 +27,11 @@ export default function TrashScreen() {
       <CardHeader title="Rifiuti registrati" />
       <Divider />
       <CardContent>
-        {rifiutiRaccolti.map((raccolta, idx) => {
-          return <CardRaccolta key={idx} raccolta={raccolta}></CardRaccolta>;
-        })}
+        <Stack direction="column" spacing={2}>
+          {rifiutiRaccolti.map((raccolta, idx) => {
+            return <CardRaccolta key={idx} raccolta={raccolta}></CardRaccolta>;
+          })}
+        </Stack>
       </CardContent>
       <Divider />
 

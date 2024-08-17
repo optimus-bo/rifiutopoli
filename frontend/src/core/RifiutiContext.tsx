@@ -5,11 +5,13 @@ import { Rifiuto } from '../api/rifiuti';
 type UseRifiutiReturn = {
   rifiutiRaccolti: Raccolta[];
   raccogliRifiuto: (rifiuto: Rifiuto, peso: number) => void;
+  rimuoviRifiuto: (codice_cer: string) => void;
 };
 
 const RifiutiContext = createContext<UseRifiutiReturn>({
   rifiutiRaccolti: [],
   raccogliRifiuto: () => {},
+  rimuoviRifiuto: () => {},
 });
 
 export default function RifiutiContextProvider({ children }: PropsWithChildren) {
@@ -30,7 +32,17 @@ export default function RifiutiContextProvider({ children }: PropsWithChildren) 
     setRifiutiRaccolti([...altre, raccolta]);
   }
 
-  return <RifiutiContext.Provider value={{ rifiutiRaccolti, raccogliRifiuto }}>{children}</RifiutiContext.Provider>;
+  function rimuoviRifiuto(codice_cer: string) {
+    const altre = rifiutiRaccolti.filter((raccolta) => raccolta.rifiuto.codice_cer !== codice_cer);
+
+    setRifiutiRaccolti(altre);
+  }
+
+  return (
+    <RifiutiContext.Provider value={{ rifiutiRaccolti, raccogliRifiuto, rimuoviRifiuto }}>
+      {children}
+    </RifiutiContext.Provider>
+  );
 }
 
 export const useRifiuti = () => useContext(RifiutiContext);
