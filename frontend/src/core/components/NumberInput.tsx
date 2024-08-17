@@ -45,11 +45,11 @@ export default function NumberInput({ label, value, onChange }: NumberInputProps
         pattern: '[0-9]*', // This helps with iOS to show the numeric keyboard
         type: 'tel', // This is to ensure numeric keypad on older devices
       }}
-      sx={{
-        '& .MuiOutlinedInput-root': {
-          borderRadius: 3,
-        },
-      }}
+      // sx={{
+      //   '& .MuiOutlinedInput-root': {
+      //     borderRadius: 3,
+      //   },
+      // }}
     />
   );
 }
