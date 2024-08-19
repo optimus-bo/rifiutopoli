@@ -1,10 +1,10 @@
 import CloseIcon from '@mui/icons-material/Close';
 import { Box, IconButton, Paper, Stack, Tooltip, Typography } from '@mui/material';
-import { Raccolta } from '../../api/raccolte';
+import { RaccoltaCreate } from '../../api/raccolte';
 import { useRifiuti } from '../RifiutiContext';
 
 type CardRaccoltaProps = {
-  raccolta: Raccolta;
+  raccolta: RaccoltaCreate;
 };
 
 export default function CardRaccolta({ raccolta }: CardRaccoltaProps) {
