@@ -4,15 +4,17 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { Box, Button, Stack, TextField, Typography } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
 import { useToast } from 'optimus-bo-ui/dist/components/Toast';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { registraRifiuto, RifiutoCreate } from '../../../api/rifiuti';
 import SettingsDialog from './SettingsDialog';
 
 export default function CreaRifiuto() {
   const [open, setOpen] = useState(false);
-  const { Component, showToast } = useToast({ severity: 'error', text: 'Problema con il server' });
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
+  const { Component, showToast } = useToast({ severity: 'error', text: 'Problema con il server' });
   const { handleSubmit, register } = useForm<RifiutoCreate>({
     defaultValues: {
       descrizione: '',
@@ -20,8 +22,10 @@ export default function CreaRifiuto() {
   });
 
   const { mutate } = useMutation({
-    mutationFn: (data: RifiutoCreate) => {
-      return registraRifiuto(data);
+    mutationFn: async (data: RifiutoCreate) => {
+      if (selectedFile !== null) {
+        return registraRifiuto(data, selectedFile);
+      }
     },
     onSuccess: () => {
       setOpen(false);
@@ -34,6 +38,13 @@ export default function CreaRifiuto() {
   function formSubmit() {
     handleSubmit((data) => mutate(data))();
   }
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file: File | undefined = event.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+    }
+  };
 
   return (
     <>
@@ -72,9 +83,24 @@ export default function CreaRifiuto() {
             ></TextField>
             <TextField label="Descrizione" {...register('descrizione')}></TextField>
 
-            <Button variant="contained" endIcon={<AddPhotoAlternateIcon />}>
+            <Button
+              variant="contained"
+              endIcon={<AddPhotoAlternateIcon />}
+              onClick={() => {
+                // triggera l'input file nascosto
+                fileInputRef.current?.click();
+              }}
+            >
               Carica Foto
             </Button>
+            {/* file input nascosto attivato dal bottone sopra */}
+            <input
+              type="file"
+              ref={fileInputRef}
+              style={{ display: 'none' }}
+              accept="image/*"
+              onChange={handleFileChange}
+            />
           </Stack>
         </Box>
       </SettingsDialog>

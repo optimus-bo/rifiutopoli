@@ -1,8 +1,12 @@
 from fastapi import (
     APIRouter,
     Depends,
+    Form,
+    File,
+    UploadFile,
 )
 from sqlalchemy.ext.asyncio import AsyncSession
+import json
 from .rifiuto_schemi import RifiutoRead
 from .rifiuto_service import *
 from ..db import get_async_session
@@ -19,10 +23,14 @@ async def get_rifiuti(db: AsyncSession = Depends(get_async_session)):
 
 @router_rifiuti.post("/rifiuti")
 async def post_rifiuti(
-    rifiuto: RifiutoCreate, db: AsyncSession = Depends(get_async_session)
+    rifiuto: str = Form(...),
+    immagine: UploadFile = File(...),
+    db: AsyncSession = Depends(get_async_session),
 ):
+    rifiuto_data = json.loads(rifiuto)
+    rifiuto_create = RifiutoCreate(**rifiuto_data)
     async with db as session:
-        return await insert_rifiuto(session, rifiuto)
+        return await insert_rifiuto(session, rifiuto_create, immagine)
 
 
 @router_rifiuti.delete("/rifiuti/{codice_cer}")

@@ -3,7 +3,9 @@ from sqlalchemy.future import select
 from fastapi import (
     HTTPException,
     status,
+    UploadFile,
 )
+import os
 from .rifiuto_schemi import *
 
 
@@ -12,6 +14,14 @@ class RifiutoNotFound(HTTPException):
         super().__init__(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Il rifiuto con codice CER {codice_cer} non è stato trovato",
+        )
+
+
+class ExtensionNotAllowed(HTTPException):
+    def __init__(self, extension: str):
+        super().__init__(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"L'estensione {extension} non è accettata come immagine",
         )
 
 
@@ -31,10 +41,29 @@ async def find_rifiuti(session: AsyncSession):
     return result.scalars().all()
 
 
-async def insert_rifiuto(session: AsyncSession, rifiuto: RifiutoCreate):
+async def store_immagine_rifiuto(immagine: UploadFile, rifiuto: Rifiuto):
+    ALLOWED_EXTENSIONS = [".png", ".jpg", ".jpeg"]
+    IMG_DIRECTORY = "../frontend/public/images"
+    filename, file_extension = os.path.splitext(immagine.filename)
+
+    if file_extension not in ALLOWED_EXTENSIONS:
+        raise ExtensionNotAllowed(file_extension)
+
+    filename = f"{rifiuto.codice_cer}{file_extension}"
+    rifiuto.img_src = f"/images/{filename}"
+
+    img_path = os.path.join(IMG_DIRECTORY, filename)
+    with open(img_path, "wb") as img_file:
+        img_file.write(await immagine.read())
+
+
+async def insert_rifiuto(
+    session: AsyncSession, rifiuto: RifiutoCreate, immagine: UploadFile
+):
     nuovo_rifiuto = Rifiuto(**rifiuto.model_dump())
-    # TODO: implementare l'immagine per i rifiuti
-    nuovo_rifiuto.img_src = ""
+    # await per start sicuri che questa funzione termini e nuovo_rifiuto.img_src sia popolato
+    await store_immagine_rifiuto(immagine, nuovo_rifiuto)
+
     session.add(nuovo_rifiuto)
     await session.commit()
     await session.refresh(nuovo_rifiuto)

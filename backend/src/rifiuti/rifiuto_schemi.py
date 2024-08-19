@@ -16,6 +16,7 @@ class Rifiuto(BaseEntity):
 class RifiutoRead(BaseModel):
     codice_cer: str
     nome: str
+    img_src: str
 
     class Config:
         orm_mode = True

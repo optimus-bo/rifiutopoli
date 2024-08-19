@@ -12,7 +12,7 @@ type RifiutoFancyProps = {
 export default function RifiutoFancy({ rifiuto }: RifiutoFancyProps) {
   return (
     <Card elevation={defaultCardElevation}>
-      <CardMedia sx={{ height: imgHeight }} image={rifiuto.imgSrc} />
+      <CardMedia sx={{ height: imgHeight }} image={rifiuto.img_src} />
       <CardContent>
         <RifiutoForm rifiuto={rifiuto} />
       </CardContent>
