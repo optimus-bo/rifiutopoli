@@ -39,20 +39,49 @@ export default function Navigation() {
         justifyContent: 'center',
         //senza questo le label degli input field passano sopra
         zIndex: 2,
+        backgroundColor: 'primary.main',
       }}
       elevation={4}
     >
-      <BottomNavigation showLabels value={screen} onChange={(event, newValue) => cambiaPagina(newValue)}>
+      <BottomNavigation
+        showLabels
+        value={screen}
+        onChange={(event, newValue) => cambiaPagina(newValue)}
+        sx={{
+          backgroundColor: 'primary.main',
+        }}
+      >
         <BottomNavigationAction
           label="Cestino"
           icon={
-            <Badge badgeContent={rifiutiRaccolti.length} color="primary">
+            <Badge badgeContent={rifiutiRaccolti.length} color="info">
               <DeleteIcon />
             </Badge>
           }
+          sx={{
+            '&.Mui-selected': {
+              color: 'white',
+            },
+          }}
         />
-        <BottomNavigationAction label="Home" icon={<HomeIcon />} />
-        <BottomNavigationAction label="Admin" icon={<HandymanIcon />} />
+        <BottomNavigationAction
+          label="Home"
+          icon={<HomeIcon />}
+          sx={{
+            '&.Mui-selected': {
+              color: 'white',
+            },
+          }}
+        />
+        <BottomNavigationAction
+          label="Admin"
+          icon={<HandymanIcon />}
+          sx={{
+            '&.Mui-selected': {
+              color: 'white',
+            },
+          }}
+        />
       </BottomNavigation>
     </Paper>
   );
