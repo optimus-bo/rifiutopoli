@@ -12,7 +12,7 @@ frontend/npm-debug.log*
 frontend/yarn-debug.log*
 frontend/yarn-error.log*
 #immagini
-frontend/public/images/
+images/
 
 backend/**/*__pycache__*/
 backend/venv

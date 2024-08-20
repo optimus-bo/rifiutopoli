@@ -7,6 +7,7 @@ from fastapi import (
 )
 import os
 from .rifiuto_schemi import *
+from ..immagini.immagini_service import store_immagine_rifiuto
 
 
 class RifiutoNotFound(HTTPException):
@@ -14,14 +15,6 @@ class RifiutoNotFound(HTTPException):
         super().__init__(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Il rifiuto con codice CER {codice_cer} non è stato trovato",
-        )
-
-
-class ExtensionNotAllowed(HTTPException):
-    def __init__(self, extension: str):
-        super().__init__(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"L'estensione {extension} non è accettata come immagine",
         )
 
 
@@ -39,22 +32,6 @@ async def find_rifiuto(session: AsyncSession, codice_cer: str):
 async def find_rifiuti(session: AsyncSession):
     result = await session.execute(select(Rifiuto))
     return result.scalars().all()
-
-
-async def store_immagine_rifiuto(immagine: UploadFile, rifiuto: Rifiuto):
-    ALLOWED_EXTENSIONS = [".png", ".jpg", ".jpeg"]
-    IMG_DIRECTORY = "../frontend/public/images"
-    filename, file_extension = os.path.splitext(immagine.filename)
-
-    if file_extension not in ALLOWED_EXTENSIONS:
-        raise ExtensionNotAllowed(file_extension)
-
-    filename = f"{rifiuto.codice_cer}{file_extension}"
-    rifiuto.img_src = f"/images/{filename}"
-
-    img_path = os.path.join(IMG_DIRECTORY, filename)
-    with open(img_path, "wb") as img_file:
-        img_file.write(await immagine.read())
 
 
 async def insert_rifiuto(
