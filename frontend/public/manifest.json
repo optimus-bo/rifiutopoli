@@ -1,6 +1,9 @@
 {
   "short_name": "Rifiutopoli",
   "name": "Rifiutopoli",
+  "start_url": "/",
+  "display": "standalone",
+  "scope": "/",
   "icons": [
     {
       "src": "favicon.ico",
@@ -18,8 +21,6 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": ".",
-  "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff"
 }
