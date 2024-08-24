@@ -2,7 +2,7 @@ import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
 import { OptimusUiApp } from 'optimus-bo-ui';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
-import Layout from './core/components/Layout';
+import Layout from './core/Layout';
 import RifiutiContextProvider from './core/RifiutiContext';
 import { routes } from './core/routes';
 import MainScreen from './screens/MainScreen';

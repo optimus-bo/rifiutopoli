@@ -7,7 +7,7 @@ import { useRifiuti } from '../core/RifiutiContext';
 import CardRaccolta from '../core/components/CardRaccolta';
 
 export default function TrashScreen() {
-  const { rifiutiRaccolti } = useRifiuti();
+  const { rifiutiRaccolti, svuotaRaccolti } = useRifiuti();
   const { Component: ToastComponent, showToast } = useToast({});
 
   const { mutate } = useMutation({
@@ -16,6 +16,7 @@ export default function TrashScreen() {
     },
     onSuccess: () => {
       showToast({ severity: 'success', text: 'Raccolta registrata correttamente' });
+      svuotaRaccolti();
     },
     onError: () => {
       showToast({ severity: 'error', text: 'Qualcosa è andato storto nella raccolta' });

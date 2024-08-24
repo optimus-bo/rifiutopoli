@@ -6,12 +6,14 @@ type UseRifiutiReturn = {
   rifiutiRaccolti: RaccoltaCreate[];
   raccogliRifiuto: (rifiuto: Rifiuto, peso: number) => void;
   rimuoviRifiuto: (codice_cer: string) => void;
+  svuotaRaccolti: () => void;
 };
 
 const RifiutiContext = createContext<UseRifiutiReturn>({
   rifiutiRaccolti: [],
   raccogliRifiuto: () => {},
   rimuoviRifiuto: () => {},
+  svuotaRaccolti: () => {},
 });
 
 const raccolteKey = 'raccolte';
@@ -49,12 +51,16 @@ export default function RifiutiContextProvider({ children }: PropsWithChildren) 
     setRifiutiRaccolti(altre);
   }
 
+  function svuotaRaccolti() {
+    setRifiutiRaccolti([]);
+  }
+
   useEffect(() => {
     storeRaccolte(rifiutiRaccolti);
   }, [rifiutiRaccolti]);
 
   return (
-    <RifiutiContext.Provider value={{ rifiutiRaccolti, raccogliRifiuto, rimuoviRifiuto }}>
+    <RifiutiContext.Provider value={{ rifiutiRaccolti, raccogliRifiuto, rimuoviRifiuto, svuotaRaccolti }}>
       {children}
     </RifiutiContext.Provider>
   );

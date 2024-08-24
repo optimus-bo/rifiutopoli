@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import { PropsWithChildren } from 'react';
-import Navigation from './Navigation';
+import Navigation from './components/Navigation';
 
 export default function Layout({ children }: PropsWithChildren) {
   return (
