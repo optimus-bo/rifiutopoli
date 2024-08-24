@@ -1,11 +1,15 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from openpyxl import Workbook
 from io import BytesIO
+from typing import Optional
+from datetime import datetime
 from ..raccolte.raccolte_service import find_raccolte, Raccolta
 
 
-async def report_raccolte_byte_buffer(session: AsyncSession) -> BytesIO:
-    raccolte: list[Raccolta] = await find_raccolte(session)
+async def report_raccolte_byte_buffer(
+    session: AsyncSession, start_date: Optional[datetime], end_date: Optional[datetime]
+) -> BytesIO:
+    raccolte: list[Raccolta] = await find_raccolte(session, start_date, end_date)
     # create an excel workbook and sheet
     workbook = Workbook()
     sheet = workbook.active

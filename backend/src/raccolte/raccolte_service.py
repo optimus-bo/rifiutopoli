@@ -4,6 +4,8 @@ from fastapi import (
     HTTPException,
     status,
 )
+from typing import Optional
+from datetime import datetime, timedelta
 from .raccolte_schemi import *
 
 
@@ -15,8 +17,21 @@ class PesoInvalido(HTTPException):
         )
 
 
-async def find_raccolte(session: AsyncSession):
-    result = await session.execute(select(Raccolta))
+async def find_raccolte(
+    session: AsyncSession,
+    start_date: Optional[datetime] = None,
+    end_date: Optional[datetime] = None,
+):
+    query = select(Raccolta)
+
+    if start_date is not None:
+        query = query.where(Raccolta.data >= start_date)
+    if end_date is not None:
+        # avanza di un giorno per includere le raccolte nel giorno end_date
+        end_date = end_date + timedelta(days=1)
+        query = query.where(Raccolta.data <= end_date)
+
+    result = await session.execute(query)
     return result.scalars().all()
 
 
