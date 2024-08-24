@@ -43,8 +43,8 @@ async def store_immagine_rifiuto(immagine: UploadFile, rifiuto: Rifiuto):
 
 
 def validate_image_name(image_name: str):
-    # TODO: implementare
-    pass
+    if "/" in image_name or ".." in image_name:
+        raise ImmagineNotFound(image_name)
 
 
 def invia_immagine(image_name: str):
