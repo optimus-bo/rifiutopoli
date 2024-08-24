@@ -7,6 +7,7 @@ from pathlib import Path
 from .rifiuti.rifiuto_router import router_rifiuti
 from .raccolte.raccolte_router import router_raccolte
 from .immagini.immagini_router import router_immagini
+from .documenti.documenti_router import router_documenti
 from .db import crea_tabelle
 
 
@@ -42,6 +43,7 @@ app.add_event_handler("startup", startup_event)
 app.include_router(router_rifiuti, prefix="/api", tags=["rifiuti"])
 app.include_router(router_raccolte, prefix="/api", tags=["raccolte"])
 app.include_router(router_immagini, prefix="/api", tags=["immagini"])
+app.include_router(router_documenti, prefix="/api", tags=["documenti"])
 
 
 # TODO: sta roba fa riscritta per bene
