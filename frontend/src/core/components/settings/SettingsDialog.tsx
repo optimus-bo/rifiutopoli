@@ -1,6 +1,6 @@
 import CloseIcon from '@mui/icons-material/Close';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, ReactNode } from 'react';
 
 type SettingsDialogProps = PropsWithChildren & {
   open: boolean;
@@ -8,6 +8,7 @@ type SettingsDialogProps = PropsWithChildren & {
   title: string;
   onConfirm?: () => void;
   confirmLabel?: string;
+  confirmIcon?: ReactNode;
 };
 
 export default function SettingsDialog({
@@ -17,6 +18,7 @@ export default function SettingsDialog({
   title,
   onConfirm = () => {},
   confirmLabel = 'Conferma',
+  confirmIcon = undefined,
 }: SettingsDialogProps) {
   return (
     <Dialog fullScreen open={open} onClose={onClose}>
@@ -28,7 +30,7 @@ export default function SettingsDialog({
         <Button onClick={() => onClose()} variant="outlined" color="error" startIcon={<CloseIcon />}>
           Chiudi
         </Button>
-        <Button onClick={() => onConfirm()} variant="contained">
+        <Button onClick={() => onConfirm()} variant="contained" endIcon={confirmIcon}>
           {confirmLabel}
         </Button>
       </DialogActions>
