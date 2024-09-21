@@ -62,11 +62,7 @@ export default function RifiutoForm({ rifiuto }: RifiutoFormProps) {
         confirmLabel="Conferma Carico"
         onConfirm={eseguiRegistrazione}
       >
-        <Box
-          component="img"
-          src="https://static.vecteezy.com/system/resources/previews/016/916/479/original/placeholder-icon-design-free-vector.jpg"
-          sx={{ height: '100%', width: 'auto' }}
-        />
+        <Box component="img" src={`/api/images/mappe/${rifiuto.codice_rdr}`} sx={{ height: '100%', width: 'auto' }} />
       </PreconfiguredDialog>
       {ToastComponent}
     </Stack>
