@@ -1,4 +1,5 @@
-import { Card, CardContent, CardMedia, Typography } from '@mui/material';
+import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+import { Card, CardContent, CardMedia, Stack, Typography } from '@mui/material';
 import { Rifiuto } from '../../api/rifiuti';
 import RifiutoForm from './RifiutoForm';
 
@@ -10,13 +11,33 @@ type RifiutoFancyProps = {
 };
 
 export default function RifiutoFancy({ rifiuto }: RifiutoFancyProps) {
+  // rifiuto pericolosio se il codice pittogramma non è un falsy
+  const pericoloso = !!rifiuto.codice_pittogramma;
+  const colore = pericoloso ? 'red' : 'green';
+
   return (
-    <Card elevation={defaultCardElevation}>
+    <Card
+      elevation={defaultCardElevation}
+      sx={{
+        border: 2,
+        borderColor: colore,
+        boxShadow: `0px 4px 20px 0px ${colore}`,
+      }}
+    >
       <CardMedia sx={{ height: imgHeight }} image={`/api${rifiuto.img_src}`} />
       <CardContent>
-        <Typography variant="caption" textAlign="left">
+        <Typography textAlign="left" fontWeight="bold" color={colore}>
           {rifiuto.codice_eer}
         </Typography>
+        <Typography textAlign="left">Tipo Contenitore: {rifiuto.contenitore}</Typography>
+
+        {pericoloso && (
+          <Stack direction="row" alignItems="center" alignContent="center" spacing={1}>
+            <WarningAmberIcon sx={{ color: 'orange' }} />
+            <Typography variant="caption">{rifiuto.codice_pittogramma}</Typography>
+          </Stack>
+        )}
+
         <RifiutoForm rifiuto={rifiuto} />
       </CardContent>
     </Card>
