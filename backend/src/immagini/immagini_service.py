@@ -34,7 +34,7 @@ async def store_immagine_rifiuto(immagine: UploadFile, rifiuto: Rifiuto):
     if file_extension not in ALLOWED_EXTENSIONS:
         raise ExtensionNotAllowed(file_extension)
 
-    filename = f"{rifiuto.codice_cer}{file_extension}"
+    filename = f"{rifiuto.codice_eer}{file_extension}".replace(" ", "-")
     rifiuto.img_src = f"/images/{filename}"
 
     img_path = os.path.join(IMG_DIRECTORY, filename)

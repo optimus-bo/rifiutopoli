@@ -5,7 +5,7 @@ import { Rifiuto } from '../api/rifiuti';
 type UseRifiutiReturn = {
   rifiutiRaccolti: RaccoltaCreate[];
   raccogliRifiuto: (rifiuto: Rifiuto, peso: number) => void;
-  rimuoviRifiuto: (codice_cer: string) => void;
+  rimuoviRifiuto: (codice_eer: string) => void;
   svuotaRaccolti: () => void;
 };
 
@@ -33,20 +33,20 @@ export default function RifiutiContextProvider({ children }: PropsWithChildren) 
   function raccogliRifiuto(rifiuto: Rifiuto, peso: number) {
     // inizializza una raccolta per questo rifiuto
     const raccolta: RaccoltaCreate = rifiutiRaccolti.find(
-      (raccolta) => raccolta.rifiuto.codice_cer === rifiuto.codice_cer
+      (raccolta) => raccolta.rifiuto.codice_eer === rifiuto.codice_eer
     ) ?? {
       rifiuto: rifiuto,
       peso: 0.0,
     };
     // tutte le altre raccolte
-    const altre = rifiutiRaccolti.filter((raccolta) => raccolta.rifiuto.codice_cer !== rifiuto.codice_cer);
+    const altre = rifiutiRaccolti.filter((raccolta) => raccolta.rifiuto.codice_eer !== rifiuto.codice_eer);
 
     raccolta.peso = raccolta.peso + peso;
     setRifiutiRaccolti([...altre, raccolta]);
   }
 
-  function rimuoviRifiuto(codice_cer: string) {
-    const altre = rifiutiRaccolti.filter((raccolta) => raccolta.rifiuto.codice_cer !== codice_cer);
+  function rimuoviRifiuto(codice_eer: string) {
+    const altre = rifiutiRaccolti.filter((raccolta) => raccolta.rifiuto.codice_eer !== codice_eer);
 
     setRifiutiRaccolti(altre);
   }

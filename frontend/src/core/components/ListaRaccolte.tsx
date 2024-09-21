@@ -25,7 +25,7 @@ export default function ListaRaccolte() {
             }}
           >
             <Typography>
-              <b>Rifiuto:</b> {raccolta.codice_cer}
+              <b>Rifiuto:</b> {raccolta.codice_eer}
             </Typography>
             <Typography>Chili Totali: {raccolta.peso}kg</Typography>
             <Typography>Quando: {format(raccolta.data, 'dd/MM/yyyy HH:mm')}</Typography>

@@ -8,9 +8,9 @@ from ..db import BaseEntity
 class Rifiuto(BaseEntity):
     __tablename__ = "rifiuto"
     codice_eer: Mapped[str] = mapped_column(String, primary_key=True)
-    nome: Mapped[str] = mapped_column(String)
-    descrizione: Mapped[str] = mapped_column(String)
-    img_src: Mapped[str] = mapped_column(String)
+    nome: Mapped[str] = mapped_column(String, nullable=True)
+    descrizione: Mapped[str] = mapped_column(String, nullable=True)
+    img_src: Mapped[str] = mapped_column(String, nullable=False)
     codice_pittogramma: Mapped[str] = mapped_column(String, nullable=True)
     codice_rdr: Mapped[str] = mapped_column(String, nullable=False)
     contenitore: Mapped[str] = mapped_column(String, nullable=False)

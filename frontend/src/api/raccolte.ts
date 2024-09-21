@@ -3,7 +3,7 @@ import { Rifiuto } from './rifiuti';
 
 export type Raccolta = {
   id: number;
-  codice_cer: string;
+  codice_eer: string;
   peso: number;
   // ISO string
   data: string;
@@ -17,7 +17,7 @@ export type RaccoltaCreate = {
 export async function registraRaccolte(raccolte: RaccoltaCreate[]) {
   return backendClient.post(
     '/raccolte',
-    raccolte.map((raccolta) => ({ peso: raccolta.peso, codice_cer: raccolta.rifiuto.codice_cer }))
+    raccolte.map((raccolta) => ({ peso: raccolta.peso, codice_eer: raccolta.rifiuto.codice_eer }))
   );
 }
 

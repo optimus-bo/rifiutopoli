@@ -1,4 +1,4 @@
-import { Card, CardContent, CardMedia } from '@mui/material';
+import { Card, CardContent, CardMedia, Typography } from '@mui/material';
 import { Rifiuto } from '../../api/rifiuti';
 import RifiutoForm from './RifiutoForm';
 
@@ -14,6 +14,9 @@ export default function RifiutoFancy({ rifiuto }: RifiutoFancyProps) {
     <Card elevation={defaultCardElevation}>
       <CardMedia sx={{ height: imgHeight }} image={`/api${rifiuto.img_src}`} />
       <CardContent>
+        <Typography variant="caption" textAlign="left">
+          {rifiuto.codice_eer}
+        </Typography>
         <RifiutoForm rifiuto={rifiuto} />
       </CardContent>
     </Card>
