@@ -11,10 +11,6 @@ export async function scaricaReportExcel(startDate?: Dayjs, endDate?: Dayjs): Pr
   }
   const response = await backendClient.get(`/report-excel?${query}`, {
     responseType: 'blob', // Ensure the response is treated as binary
-    // params: {
-    //   start_date: start,
-    //   end_date: end,
-    // },
   });
   return new Blob([response.data], {
     type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',

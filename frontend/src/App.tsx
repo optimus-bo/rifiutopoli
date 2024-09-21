@@ -28,13 +28,6 @@ const theme = createTheme({
         },
       },
     },
-    MuiPickersToolbar: {
-      styleOverrides: {
-        root: {
-          borderRadius: formElementsBorderRadius,
-        },
-      },
-    },
   },
 } as ThemeOptions);
 
