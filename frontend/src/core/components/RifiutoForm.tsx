@@ -1,9 +1,12 @@
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Box, Button, Slider, Stack } from '@mui/material';
+import { useMutation } from '@tanstack/react-query';
 import { useToast } from 'optimus-bo-ui/dist/components/Toast';
 import { useState } from 'react';
+import { registraSingolaRaccolta } from '../../api/raccolte';
 import { Rifiuto } from '../../api/rifiuti';
 import NumberInput from './NumberInput';
+import PreconfiguredDialog from './PreconfiguredDialog';
 
 type RifiutoFormProps = {
   rifiuto: Rifiuto;
@@ -11,18 +14,27 @@ type RifiutoFormProps = {
 
 export default function RifiutoForm({ rifiuto }: RifiutoFormProps) {
   const [value, setValue] = useState<number | null>(null);
+  const [open, setOpen] = useState(false);
   const { Component: ToastComponent, showToast } = useToast({});
 
-  function eseguiRigstrazione() {
-    // butta(rifiuto, value ?? 0);
-    setValue(null);
-    showToast({ severity: 'success', text: 'Rifiuto aggiunto al cestino' });
-  }
+  const { mutate: eseguiRegistrazione } = useMutation({
+    mutationFn: () => {
+      return registraSingolaRaccolta({ rifiuto: rifiuto, peso: value ?? 0 });
+    },
+    onSuccess: () => {
+      setValue(null);
+      showToast({ severity: 'success', text: 'Carico registrato correttamente' });
+      setOpen(false);
+    },
+    onError: () => {
+      showToast({ severity: 'error', text: 'Qualcosa è andato storto nella raccolta' });
+    },
+  });
 
   return (
     <Stack spacing={2} marginTop={2}>
       <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
-        <NumberInput label="Kg da buttare" value={value} onChange={(newvalue) => setValue(newvalue)} />
+        <NumberInput label="Numero Contenitori" value={value} onChange={(newvalue) => setValue(newvalue)} />
         <Slider
           value={value ?? 0}
           onChange={(_, value) => setValue(typeof value === 'number' ? value : value[0])}
@@ -34,7 +46,7 @@ export default function RifiutoForm({ rifiuto }: RifiutoFormProps) {
 
       <Button
         variant="contained"
-        onClick={eseguiRigstrazione}
+        onClick={() => setOpen(true)}
         disabled={value === null}
         startIcon={<DeleteIcon />}
         sx={{ borderRadius: 3 }}
@@ -42,6 +54,20 @@ export default function RifiutoForm({ rifiuto }: RifiutoFormProps) {
         Carico
       </Button>
 
+      <PreconfiguredDialog
+        open={open}
+        onClose={() => setOpen(false)}
+        title="Locazione RDR"
+        hideCloseButton
+        confirmLabel="Conferma Carico"
+        onConfirm={eseguiRegistrazione}
+      >
+        <Box
+          component="img"
+          src="https://static.vecteezy.com/system/resources/previews/016/916/479/original/placeholder-icon-design-free-vector.jpg"
+          sx={{ height: '100%', width: 'auto' }}
+        />
+      </PreconfiguredDialog>
       {ToastComponent}
     </Stack>
   );

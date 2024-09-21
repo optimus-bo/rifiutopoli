@@ -21,6 +21,10 @@ export async function registraRaccolte(raccolte: RaccoltaCreate[]) {
   );
 }
 
+export async function registraSingolaRaccolta(raccolta: RaccoltaCreate) {
+  return registraRaccolte([raccolta]);
+}
+
 export async function getRaccolte(): Promise<Raccolta[]> {
   return (await backendClient.get('/raccolte')).data;
 }
