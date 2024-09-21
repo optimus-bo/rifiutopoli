@@ -19,7 +19,7 @@ export default function RifiutoForm({ rifiuto }: RifiutoFormProps) {
 
   const { mutate: eseguiRegistrazione } = useMutation({
     mutationFn: () => {
-      return registraSingolaRaccolta({ rifiuto: rifiuto, peso: value ?? 0 });
+      return registraSingolaRaccolta({ rifiuto: rifiuto, contenitori: value ?? 0 });
     },
     onSuccess: () => {
       setValue(null);

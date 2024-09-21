@@ -9,14 +9,14 @@ class Raccolta(BaseEntity):
     __tablename__ = "raccolta"
     id: Mapped[int] = mapped_column(primary_key=True)
     codice_eer: Mapped[str] = mapped_column(ForeignKey("rifiuto.codice_eer"))
-    peso: Mapped[int] = mapped_column(Integer)
+    contenitori: Mapped[int] = mapped_column(Integer)
     data: Mapped[datetime] = mapped_column(DateTime)
 
 
 class RaccoltaRead(BaseModel):
     id: int
     codice_eer: str
-    peso: int
+    contenitori: int
     data: datetime
 
     class Config:
@@ -26,7 +26,7 @@ class RaccoltaRead(BaseModel):
 
 class RaccoltaCreate(BaseModel):
     codice_eer: str
-    peso: int
+    contenitori: int
 
     class Config:
         orm_mode = True
