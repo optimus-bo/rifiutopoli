@@ -11,6 +11,9 @@ class Rifiuto(BaseEntity):
     nome: Mapped[str] = mapped_column(String)
     descrizione: Mapped[str] = mapped_column(String)
     img_src: Mapped[str] = mapped_column(String)
+    # codice_pittogramma: Mapped[str] = mapped_column(String, nullable=True)
+    # codice_rdr: Mapped[str] = mapped_column(String, nullable=False)
+    # contenitore: Mapped[str] = mapped_column(String, nullable=False)
 
 
 class RifiutoRead(BaseModel):
