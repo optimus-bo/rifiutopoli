@@ -23,15 +23,15 @@ export default function RifiutoForm({ rifiuto }: RifiutoFormProps) {
   }
 
   return (
-    <Stack spacing={2}>
+    <Stack spacing={2} marginTop={2}>
       <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
         <NumberInput label="Kg da buttare" value={value} onChange={(newvalue) => setValue(newvalue)} />
         <Slider
           value={value ?? 0}
           onChange={(_, value) => setValue(typeof value === 'number' ? value : value[0])}
-          step={10}
+          step={1}
           min={0}
-          max={1000}
+          max={10}
         />
       </Box>
 
@@ -42,7 +42,7 @@ export default function RifiutoForm({ rifiuto }: RifiutoFormProps) {
         startIcon={<DeleteIcon />}
         sx={{ borderRadius: 3 }}
       >
-        Butta
+        Carico
       </Button>
 
       {ToastComponent}
