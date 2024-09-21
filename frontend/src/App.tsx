@@ -10,7 +10,6 @@ import { routes } from './core/routes';
 import { formElementsBorderRadius } from './core/values';
 import MainScreen from './screens/MainScreen';
 import SettingScreen from './screens/SettingScreen';
-import TrashScreen from './screens/TrashScreen';
 
 const theme = createTheme({
   components: {
@@ -51,7 +50,6 @@ function App() {
                   <Routes>
                     <Route path={routes.rifiuti} element={<MainScreen />} />
                     <Route path={routes.impostazioni} element={<SettingScreen />} />
-                    <Route path={routes.cestino} element={<TrashScreen />} />
                   </Routes>
                 </Layout>
               </RifiutiContextProvider>
