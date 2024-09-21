@@ -8,14 +8,14 @@ from ..db import BaseEntity
 class Raccolta(BaseEntity):
     __tablename__ = "raccolta"
     id: Mapped[int] = mapped_column(primary_key=True)
-    codice_cer: Mapped[str] = mapped_column(ForeignKey("rifiuto.codice_cer"))
+    codice_eer: Mapped[str] = mapped_column(ForeignKey("rifiuto.codice_eer"))
     peso: Mapped[int] = mapped_column(Integer)
     data: Mapped[datetime] = mapped_column(DateTime)
 
 
 class RaccoltaRead(BaseModel):
     id: int
-    codice_cer: str
+    codice_eer: str
     peso: int
     data: datetime
 
@@ -25,7 +25,7 @@ class RaccoltaRead(BaseModel):
 
 
 class RaccoltaCreate(BaseModel):
-    codice_cer: str
+    codice_eer: str
     peso: int
 
     class Config:

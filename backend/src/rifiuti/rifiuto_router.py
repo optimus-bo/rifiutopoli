@@ -33,9 +33,9 @@ async def post_rifiuti(
         return await insert_rifiuto(session, rifiuto_create, immagine)
 
 
-@router_rifiuti.delete("/rifiuti/{codice_cer}")
+@router_rifiuti.delete("/rifiuti/{codice_eer}")
 async def delete_rifiuto(
-    codice_cer: str, db: AsyncSession = Depends(get_async_session)
+    codice_eer: str, db: AsyncSession = Depends(get_async_session)
 ):
     async with db as session:
-        return await remove_rifiuto(session, codice_cer)
+        return await remove_rifiuto(session, codice_eer)

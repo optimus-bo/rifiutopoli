@@ -15,11 +15,7 @@ export default function CreaRifiuto() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const { Component, showToast } = useToast({ severity: 'error', text: 'Problema con il server' });
-  const { handleSubmit, register } = useForm<RifiutoCreate>({
-    defaultValues: {
-      descrizione: '',
-    },
-  });
+  const { handleSubmit, register } = useForm<RifiutoCreate>({});
 
   const { mutate } = useMutation({
     mutationFn: async (data: RifiutoCreate) => {
@@ -70,18 +66,24 @@ export default function CreaRifiuto() {
 
           <Stack direction="column" spacing={1}>
             <TextField
-              label="Codice CER*"
-              {...register('codice_cer', {
+              label="Codice EER*"
+              {...register('codice_eer', {
                 required: 'Questo campo è obbligatorio',
               })}
             ></TextField>
             <TextField
-              label="Nome*"
-              {...register('nome', {
+              label="Tipo Contenitore*"
+              {...register('contenitore', {
                 required: 'Questo campo è obbligatorio',
               })}
             ></TextField>
-            <TextField label="Descrizione" {...register('descrizione')}></TextField>
+            <TextField
+              label="Codice RDR*"
+              {...register('codice_rdr', {
+                required: 'Questo campo è obbligatorio',
+              })}
+            ></TextField>
+            <TextField label="Codice Pittogramma" {...register('codice_pittogramma')}></TextField>
 
             <Button
               variant="contained"

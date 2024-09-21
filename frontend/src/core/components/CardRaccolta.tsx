@@ -17,7 +17,7 @@ export default function CardRaccolta({ raccolta }: CardRaccoltaProps) {
           {raccolta.rifiuto.nome}
         </Typography>
         <Typography textAlign="left" variant="h6">
-          Codice CER: {raccolta.rifiuto.codice_cer}
+          Codice CER: {raccolta.rifiuto.codice_eer}
         </Typography>
         <Typography variant="h6" textAlign="left">
           Totale: {raccolta.peso} Kg
@@ -26,7 +26,7 @@ export default function CardRaccolta({ raccolta }: CardRaccoltaProps) {
       <Box flexGrow={1} />
 
       <Tooltip title="Rimuovi questo rifiuto">
-        <IconButton color="error" onClick={() => rimuoviRifiuto(raccolta.rifiuto.codice_cer)}>
+        <IconButton color="error" onClick={() => rimuoviRifiuto(raccolta.rifiuto.codice_eer)}>
           <CloseIcon />
         </IconButton>
       </Tooltip>

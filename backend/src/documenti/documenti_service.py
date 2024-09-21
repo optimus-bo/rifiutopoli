@@ -24,7 +24,7 @@ async def report_raccolte_byte_buffer(
         sheet.append(
             [
                 raccolta.data.strftime("%d/%m/%Y %H:%M"),
-                raccolta.codice_cer,
+                raccolta.codice_eer,
                 raccolta.peso,
             ]
         )

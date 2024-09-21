@@ -1,5 +1,5 @@
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Box, Button, Slider, Stack, Typography } from '@mui/material';
+import { Box, Button, Slider, Stack } from '@mui/material';
 import { useToast } from 'optimus-bo-ui/dist/components/Toast';
 import { useState } from 'react';
 import { Rifiuto } from '../../api/rifiuti';
@@ -24,13 +24,6 @@ export default function RifiutoForm({ rifiuto }: RifiutoFormProps) {
 
   return (
     <Stack spacing={2}>
-      <Typography variant="h5" fontWeight="bold" sx={{ textDecoration: 'underline' }} textAlign="left">
-        {rifiuto.nome}
-      </Typography>
-      <Typography variant="caption" textAlign="left">
-        CER: {rifiuto.codice_cer}
-      </Typography>
-
       <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
         <NumberInput label="Kg da buttare" value={value} onChange={(newvalue) => setValue(newvalue)} />
         <Slider

@@ -11,21 +11,21 @@ from ..immagini.immagini_service import store_immagine_rifiuto
 
 
 class RifiutoNotFound(HTTPException):
-    def __init__(self, codice_cer: str):
+    def __init__(self, codice_eer: str):
         super().__init__(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Il rifiuto con codice CER {codice_cer} non è stato trovato",
+            detail=f"Il rifiuto con codice CER {codice_eer} non è stato trovato",
         )
 
 
-async def find_rifiuto(session: AsyncSession, codice_cer: str):
+async def find_rifiuto(session: AsyncSession, codice_eer: str):
     result = await session.execute(
-        select(Rifiuto).filter(Rifiuto.codice_cer == codice_cer)
+        select(Rifiuto).filter(Rifiuto.codice_eer == codice_eer)
     )
     rifiuto = result.scalars().first()
 
     if rifiuto is None:
-        raise RifiutoNotFound(codice_cer)
+        raise RifiutoNotFound(codice_eer)
     return rifiuto
 
 
@@ -44,10 +44,10 @@ async def insert_rifiuto(
     session.add(nuovo_rifiuto)
     await session.commit()
     await session.refresh(nuovo_rifiuto)
-    return await find_rifiuto(session, nuovo_rifiuto.codice_cer)
+    return await find_rifiuto(session, nuovo_rifiuto.codice_eer)
 
 
-async def remove_rifiuto(session: AsyncSession, codice_cer: str):
-    rifiuto = await find_rifiuto(session, codice_cer)
+async def remove_rifiuto(session: AsyncSession, codice_eer: str):
+    rifiuto = await find_rifiuto(session, codice_eer)
     await session.delete(rifiuto)
     await session.commit()
