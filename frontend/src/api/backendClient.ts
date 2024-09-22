@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // TODO: da settare l'url del backend, visto che è a uso interno va bene anche un IP
 export const BACKEND =
-  process.env.NODE_ENV === 'production' ? 'https://iaisydanieletarek.ddns.net:44444/' : 'http://localhost:8000';
+  process.env.NODE_ENV === 'production' ? 'https://iaisydanieletarek.ddns.net:44444' : 'http://localhost:8000';
 
 export const backendClient = axios.create({
   baseURL: BACKEND,

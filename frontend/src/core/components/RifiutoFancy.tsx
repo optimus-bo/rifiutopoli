@@ -1,5 +1,6 @@
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import { Card, CardContent, CardMedia, Stack, Typography } from '@mui/material';
+import { BACKEND } from '../../api/backendClient';
 import { Rifiuto } from '../../api/rifiuti';
 import RifiutoForm from './RifiutoForm';
 
@@ -24,7 +25,7 @@ export default function RifiutoFancy({ rifiuto }: RifiutoFancyProps) {
         boxShadow: `0px 4px 20px 0px ${colore}`,
       }}
     >
-      <CardMedia sx={{ height: imgHeight }} image={`/api${rifiuto.img_src}`} />
+      <CardMedia sx={{ height: imgHeight }} image={`${BACKEND}/api${rifiuto.img_src}`} />
       <CardContent>
         <Typography textAlign="left" fontWeight="bold" color={colore}>
           {rifiuto.codice_eer}

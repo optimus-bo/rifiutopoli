@@ -14,5 +14,5 @@ def get_logo(image_name: str):
 @router_immagini.get("/images/mappe/{codice_rdr}")
 def get_mappa(codice_rdr: str):
     # TODO: da rimuovere quando abbiamo le mappe vere
-    codice_rdr = "placeholder"
-    return invia_immagine(f"mappeRDR/{codice_rdr}.jpg")
+    codice_rdr = "placeholder.jpg"
+    return invia_mappa(codice_rdr)

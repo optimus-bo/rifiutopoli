@@ -35,7 +35,7 @@ async def store_immagine_rifiuto(immagine: UploadFile, rifiuto: Rifiuto):
         raise ExtensionNotAllowed(file_extension)
 
     filename = f"{rifiuto.codice_eer}{file_extension}".replace(" ", "-")
-    rifiuto.img_src = f"/images/{filename}"
+    rifiuto.img_src = f"/api/images/{filename}"
 
     img_path = os.path.join(IMG_DIRECTORY, filename)
     with open(img_path, "wb") as img_file:
@@ -53,5 +53,14 @@ def invia_immagine(image_name: str):
     if not os.path.isfile(file_path):
         raise ImmagineNotFound(image_name)
 
-    content_type = "image/png"  # TODO content type corretto
+    content_type = "image/png"
+    return FileResponse(path=file_path, media_type=content_type)
+
+
+def invia_mappa(image_name: str):
+    file_path = os.path.join(IMG_DIRECTORY, "mappeRDR", image_name)
+    if not os.path.isfile(file_path):
+        raise ImmagineNotFound(image_name)
+
+    content_type = "image/png"
     return FileResponse(path=file_path, media_type=content_type)

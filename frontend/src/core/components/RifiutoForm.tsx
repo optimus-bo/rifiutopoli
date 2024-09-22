@@ -3,6 +3,7 @@ import { Box, Button, Slider, Stack } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
 import { useToast } from 'optimus-bo-ui/dist/components/Toast';
 import { useState } from 'react';
+import { BACKEND } from '../../api/backendClient';
 import { registraSingolaRaccolta } from '../../api/raccolte';
 import { Rifiuto } from '../../api/rifiuti';
 import NumberInput from './NumberInput';
@@ -62,7 +63,11 @@ export default function RifiutoForm({ rifiuto }: RifiutoFormProps) {
         confirmLabel="Conferma Carico"
         onConfirm={eseguiRegistrazione}
       >
-        <Box component="img" src={`/api/images/mappe/${rifiuto.codice_rdr}`} sx={{ height: '100%', width: 'auto' }} />
+        <Box
+          component="img"
+          src={`${BACKEND}/api/images/mappe/${rifiuto.codice_rdr}`}
+          sx={{ height: '100%', width: 'auto' }}
+        />
       </PreconfiguredDialog>
       {ToastComponent}
     </Stack>
