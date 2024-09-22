@@ -7,7 +7,7 @@ import { Dayjs } from 'dayjs';
 import { useState } from 'react';
 import { scaricaReportExcel } from '../../../api/documenti';
 import { formElementsBorderRadius } from '../../values';
-import SettingsDialog from './SettingsDialog';
+import PreconfiguredDialog from '../PreconfiguredDialog';
 
 export default function ReportExcel() {
   const [open, setOpen] = useState(false);
@@ -34,7 +34,7 @@ export default function ReportExcel() {
         Report dello scarico
       </Button>
 
-      <SettingsDialog
+      <PreconfiguredDialog
         open={open}
         onClose={() => setOpen(false)}
         title="Genera un report degli scarichi in formato Excel"
@@ -75,7 +75,7 @@ export default function ReportExcel() {
             />
           </Stack>
         </Box>
-      </SettingsDialog>
+      </PreconfiguredDialog>
     </>
   );
 }

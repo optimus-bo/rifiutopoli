@@ -7,7 +7,7 @@ import { useToast } from 'optimus-bo-ui/dist/components/Toast';
 import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { registraRifiuto, RifiutoCreate } from '../../../api/rifiuti';
-import SettingsDialog from './SettingsDialog';
+import PreconfiguredDialog from '../PreconfiguredDialog';
 
 export default function CreaRifiuto() {
   const [open, setOpen] = useState(false);
@@ -54,7 +54,7 @@ export default function CreaRifiuto() {
         Aggiungi rifiuto
       </Button>
 
-      <SettingsDialog
+      <PreconfiguredDialog
         open={open}
         onClose={() => setOpen(false)}
         title="Registra un nuovo rifiuto"
@@ -105,7 +105,7 @@ export default function CreaRifiuto() {
             />
           </Stack>
         </Box>
-      </SettingsDialog>
+      </PreconfiguredDialog>
 
       {Component}
     </>
