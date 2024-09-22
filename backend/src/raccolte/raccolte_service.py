@@ -1,5 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+from sqlalchemy.orm import selectinload
 from fastapi import (
     HTTPException,
     status,
@@ -21,6 +22,7 @@ async def find_raccolte(
     session: AsyncSession,
     start_date: Optional[datetime] = None,
     end_date: Optional[datetime] = None,
+    eager_mode: bool = False,
 ):
     query = select(Raccolta)
 
@@ -30,6 +32,9 @@ async def find_raccolte(
         # avanza di un giorno per includere le raccolte nel giorno end_date
         end_date = end_date + timedelta(days=1)
         query = query.where(Raccolta.data <= end_date)
+
+    if eager_mode:
+        query = query.options(selectinload(Raccolta.rifiuto))
 
     result = await session.execute(query)
     return result.scalars().all()
