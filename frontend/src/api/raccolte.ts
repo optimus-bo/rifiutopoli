@@ -4,21 +4,25 @@ import { Rifiuto } from './rifiuti';
 export type Raccolta = {
   id: number;
   codice_eer: string;
-  peso: number;
+  contenitori: number;
   // ISO string
   data: string;
 };
 
 export type RaccoltaCreate = {
   rifiuto: Rifiuto;
-  peso: number;
+  contenitori: number;
 };
 
 export async function registraRaccolte(raccolte: RaccoltaCreate[]) {
   return backendClient.post(
     '/raccolte',
-    raccolte.map((raccolta) => ({ peso: raccolta.peso, codice_eer: raccolta.rifiuto.codice_eer }))
+    raccolte.map((raccolta) => ({ contenitori: raccolta.contenitori, codice_eer: raccolta.rifiuto.codice_eer }))
   );
+}
+
+export async function registraSingolaRaccolta(raccolta: RaccoltaCreate) {
+  return registraRaccolte([raccolta]);
 }
 
 export async function getRaccolte(): Promise<Raccolta[]> {

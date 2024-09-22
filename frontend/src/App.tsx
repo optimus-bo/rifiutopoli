@@ -5,7 +5,6 @@ import { OptimusUiApp } from 'optimus-bo-ui';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Layout from './core/Layout';
-import RifiutiContextProvider from './core/RifiutiContext';
 import { routes } from './core/routes';
 import { formElementsBorderRadius } from './core/values';
 import MainScreen from './screens/MainScreen';
@@ -45,14 +44,12 @@ function App() {
                 configure: true,
               }}
             >
-              <RifiutiContextProvider>
-                <Layout>
-                  <Routes>
-                    <Route path={routes.rifiuti} element={<MainScreen />} />
-                    <Route path={routes.impostazioni} element={<SettingScreen />} />
-                  </Routes>
-                </Layout>
-              </RifiutiContextProvider>
+              <Layout>
+                <Routes>
+                  <Route path={routes.rifiuti} element={<MainScreen />} />
+                  <Route path={routes.impostazioni} element={<SettingScreen />} />
+                </Routes>
+              </Layout>
             </OptimusUiApp>
           </BrowserRouter>
         </LocalizationProvider>
