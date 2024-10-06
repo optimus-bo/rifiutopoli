@@ -8,6 +8,7 @@ from .rifiuti.rifiuto_router import router_rifiuti
 from .raccolte.raccolte_router import router_raccolte
 from .immagini.immagini_router import router_immagini
 from .documenti.documenti_router import router_documenti
+from .operatori.operatori_router import router_operatori
 from .db import crea_tabelle
 
 
@@ -44,6 +45,7 @@ app.include_router(router_rifiuti, prefix="/api", tags=["rifiuti"])
 app.include_router(router_raccolte, prefix="/api", tags=["raccolte"])
 app.include_router(router_immagini, prefix="/api", tags=["immagini"])
 app.include_router(router_documenti, prefix="/api", tags=["documenti"])
+app.include_router(router_operatori, prefix="/api", tags=["operatori"])
 
 
 # TODO: sta roba fa riscritta per bene
