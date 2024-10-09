@@ -3,8 +3,8 @@
 cd /codice/rifiutopoli
 
 cd frontend
-#npm install
-#npm run build
+npm install
+npm run build
 
 cd ../backend
 source venv/bin/activate
