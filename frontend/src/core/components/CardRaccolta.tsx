@@ -1,8 +1,8 @@
 import { Box, Paper, Stack, Typography } from '@mui/material';
-import { RaccoltaCreate } from '../../api/raccolte';
+import { Raccolta } from '../../api/raccolte';
 
 type CardRaccoltaProps = {
-  raccolta: RaccoltaCreate;
+  raccolta: Raccolta;
 };
 
 export default function CardRaccolta({ raccolta }: CardRaccoltaProps) {

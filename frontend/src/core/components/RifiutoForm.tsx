@@ -17,7 +17,7 @@ type RifiutoFormProps = {
 const emptyIdValue = '';
 
 export default function RifiutoForm({ rifiuto }: RifiutoFormProps) {
-  const [value, setValue] = useState<number | null>(null);
+  const [numeroContenitori, setNumeroContenitori] = useState<number | null>(null);
   const [open, setOpen] = useState(false);
   const [idOperatore, setIdOperatore] = useState<number | typeof emptyIdValue>(emptyIdValue);
   const { Component: ToastComponent, showToast } = useToast({});
@@ -30,11 +30,17 @@ export default function RifiutoForm({ rifiuto }: RifiutoFormProps) {
   });
 
   const { mutate: eseguiRegistrazione } = useMutation({
-    mutationFn: () => {
-      return registraSingolaRaccolta({ rifiuto: rifiuto, contenitori: value ?? 0 });
+    mutationFn: async () => {
+      if (idOperatore !== emptyIdValue) {
+        return registraSingolaRaccolta({
+          codice_eer: rifiuto.codice_eer,
+          contenitori: numeroContenitori ?? 0,
+          id_operatore: idOperatore,
+        });
+      }
     },
     onSuccess: () => {
-      setValue(null);
+      setNumeroContenitori(null);
       showToast({ severity: 'success', text: 'Carico registrato correttamente' });
       setOpen(false);
     },
@@ -46,10 +52,14 @@ export default function RifiutoForm({ rifiuto }: RifiutoFormProps) {
   return (
     <Stack spacing={2} marginTop={2}>
       <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
-        <NumberInput label="Numero Unità" value={value} onChange={(newvalue) => setValue(newvalue)} />
+        <NumberInput
+          label="Numero Unità"
+          value={numeroContenitori}
+          onChange={(newvalue) => setNumeroContenitori(newvalue)}
+        />
         <Slider
-          value={value ?? 0}
-          onChange={(_, value) => setValue(typeof value === 'number' ? value : value[0])}
+          value={numeroContenitori ?? 0}
+          onChange={(_, value) => setNumeroContenitori(typeof value === 'number' ? value : value[0])}
           step={1}
           min={0}
           max={10}
@@ -59,7 +69,7 @@ export default function RifiutoForm({ rifiuto }: RifiutoFormProps) {
       <Button
         variant="contained"
         onClick={() => setOpen(true)}
-        disabled={value === null}
+        disabled={numeroContenitori === null}
         startIcon={<DeleteIcon />}
         sx={{ borderRadius: 3 }}
       >
