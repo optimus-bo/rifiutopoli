@@ -4,21 +4,21 @@ import { Rifiuto } from './rifiuti';
 export type Raccolta = {
   id: number;
   codice_eer: string;
+  rifiuto: Rifiuto;
   contenitori: number;
   // ISO string
   data: string;
+  id_operatore: number;
 };
 
 export type RaccoltaCreate = {
-  rifiuto: Rifiuto;
+  codice_eer: string;
   contenitori: number;
+  id_operatore: number;
 };
 
 export async function registraRaccolte(raccolte: RaccoltaCreate[]) {
-  return backendClient.post(
-    '/raccolte',
-    raccolte.map((raccolta) => ({ contenitori: raccolta.contenitori, codice_eer: raccolta.rifiuto.codice_eer }))
-  );
+  return backendClient.post('/raccolte', raccolte);
 }
 
 export async function registraSingolaRaccolta(raccolta: RaccoltaCreate) {
