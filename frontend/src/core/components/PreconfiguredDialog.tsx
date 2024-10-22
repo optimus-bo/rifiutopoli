@@ -7,6 +7,7 @@ type PreconfiguredDialogProps = PropsWithChildren & {
   onClose: () => void;
   title?: string;
   hideConfirmButton?: boolean;
+  disableConfirmButton?: boolean;
   confirmLabel?: string;
   confirmIcon?: ReactNode;
   onConfirm?: () => void;
@@ -20,6 +21,7 @@ export default function PreconfiguredDialog({
   children,
   title = '',
   hideCloseButton = false,
+  disableConfirmButton = false,
   hideConfirmButton = false,
   closeLabel = 'Chiudi',
   confirmLabel = 'Conferma',
@@ -40,7 +42,7 @@ export default function PreconfiguredDialog({
           </Button>
         )}
         {!hideConfirmButton && (
-          <Button onClick={() => onConfirm()} variant="contained" endIcon={confirmIcon}>
+          <Button onClick={() => onConfirm()} variant="contained" endIcon={confirmIcon} disabled={disableConfirmButton}>
             {confirmLabel}
           </Button>
         )}
