@@ -1,15 +1,7 @@
-import { Dayjs } from 'dayjs';
 import { backendClient } from './backendClient';
 
-export async function scaricaReportExcel(startDate?: Dayjs, endDate?: Dayjs): Promise<Blob> {
-  let query = '';
-  if (startDate) {
-    query += `&start_date=${startDate.toISOString()}`;
-  }
-  if (endDate) {
-    query += `&end_date=${endDate.toISOString()}`;
-  }
-  const response = await backendClient.get(`/report-excel?${query}`, {
+export async function scaricaReportExcel(year: number, month: number): Promise<Blob> {
+  const response = await backendClient.get(`/report-excel/${year}/${month}`, {
     responseType: 'blob', // Ensure the response is treated as binary
   });
   return new Blob([response.data], {
