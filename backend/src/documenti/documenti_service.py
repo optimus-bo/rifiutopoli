@@ -1,5 +1,5 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from openpyxl import Workbook
+from openpyxl import load_workbook
 from io import BytesIO
 from typing import Optional
 from datetime import datetime
@@ -29,25 +29,28 @@ async def report_raccolte_byte_buffer(
         session, start_date, end_date, eager_mode=True
     )
     # create an excel workbook and sheet
-    workbook = Workbook()
+    workbook = load_workbook("doc_templates/report.xlsx")
     sheet = workbook.active
+    sheet["E13"] = 42
+    sheet["E15"] = 420
+    sheet["F15"] = 69
 
-    sheet.title = "Resoconto scarico"
-    sheet.column_dimensions["A"].width = 20
-    sheet.column_dimensions["B"].width = 20
-    # write the column headers
-    sheet.append(["Data", "Codice EER", "N Contenitori", "Peso (kg)"])
+    # sheet.title = "Resoconto scarico"
+    # sheet.column_dimensions["A"].width = 20
+    # sheet.column_dimensions["B"].width = 20
+    # # write the column headers
+    # sheet.append(["Data", "Codice EER", "N Contenitori", "Peso (kg)"])
 
-    for raccolta in raccolte:
-        sheet.append(
-            [
-                raccolta.data.strftime("%d/%m/%Y %H:%M"),
-                raccolta.codice_eer,
-                raccolta.contenitori,
-                raccolta.contenitori
-                * capacita_contenitori[raccolta.rifiuto.contenitore],
-            ]
-        )
+    # for raccolta in raccolte:
+    #     sheet.append(
+    #         [
+    #             raccolta.data.strftime("%d/%m/%Y %H:%M"),
+    #             raccolta.codice_eer,
+    #             raccolta.contenitori,
+    #             raccolta.contenitori
+    #             * capacita_contenitori[raccolta.rifiuto.contenitore],
+    #         ]
+    #     )
 
     # save the workbook to a bytes buffer
     buffer = BytesIO()
