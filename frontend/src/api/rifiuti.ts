@@ -7,12 +7,14 @@ export type Rifiuto = {
   codice_pittogramma: string;
   codice_rdr: string;
   contenitore: string;
+  materiale: string;
 };
 
 export type RifiutoCreate = {
   codice_eer: string;
   codice_rdr: string;
   contenitore: string;
+  materiale: string;
   codice_pittogramma?: string;
 };
 

@@ -83,6 +83,12 @@ export default function CreaRifiuto() {
                 required: 'Questo campo è obbligatorio',
               })}
             ></TextField>
+            <TextField
+              label="Materiale rifiuto*"
+              {...register('materiale', {
+                required: 'Questo campo è obbligatorio',
+              })}
+            ></TextField>
             <TextField label="Codice Pittogramma" {...register('codice_pittogramma')}></TextField>
 
             <Button

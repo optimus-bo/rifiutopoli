@@ -9,19 +9,46 @@ from ..raccolte.raccolte_service import find_raccolte_by_month, Raccolta
 
 BASE_ROW = 13
 capacita_contenitori = {
-    "FP": 10,
+    "F.P": 10,
     "TN": 1.5,
-    "FP": 10,
+    "F.P": 10,
     "TN": 1.5,
-    "FF": 15,
+    "F.F": 15,
     "SC": 1.5,
-    "FF": 15,
+    "F.F": 15,
     "SC": 1.5,
     "FC": 12,
     "IBC": 57,
     "CARTA": 1,
     "PLASTICA": 1,
     "LEGNO": 1,
+}
+colonne = {
+    "plastica": {
+        "EER 15.01.02": {"F.P": "D", "TN": "E"},
+        "EER 15.01.10*": {"F.P": "F", "TN": "G"},
+    },
+    "metallo": {
+        "EER 15.01.04": {"F.F": "H", "SC": "I"},
+        "EER 15.01.10*": {"F.F": "J", "SC": "K"},
+    },
+    "misti": {
+        "EER 15.01.06": {"FC": "L", "IBC": "M"},
+        "EER 15.01.10*": {
+            "IBC": "N",
+        },
+    },
+    "sfuso": {
+        "EER 15.01.01": {
+            "CARTA": "P",
+        },
+        "EER 15.01.2": {
+            "PLASTICA": "Q",
+        },
+        "EER 15.01.3": {
+            "FLEGNO": "R",
+        },
+    },
 }
 
 
@@ -57,7 +84,29 @@ async def weekly_partition(session: AsyncSession, year: int, month: int):
 
 
 def aggregate_week(raccolte: list[Raccolta], sheet, week_row: int):
-    pass
+    aggregates = {}
+    for raccolta in raccolte:
+        materiale = raccolta.rifiuto.materiale
+        codice_eer = raccolta.codice_eer
+        codice_contenitore = raccolta.rifiuto.contenitore
+        num_contenitori = raccolta.contenitori
+
+        if materiale not in aggregates:
+            aggregates[materiale] = {}
+        if codice_eer not in aggregates[materiale]:
+            aggregates[materiale][codice_eer] = {}
+        if codice_contenitore not in aggregates[materiale][codice_eer]:
+            aggregates[materiale][codice_eer][codice_contenitore] = 0
+
+        aggregates[materiale][codice_eer][codice_contenitore] += num_contenitori
+
+    for materiale in aggregates.keys():
+        for codice_eer in aggregates[materiale].keys():
+            for codice_contenitore, tot_contenitori in aggregates[materiale][
+                codice_eer
+            ].items():
+                column = colonne[materiale][codice_eer][codice_contenitore]
+                sheet[f"{column}{week_row}"] = tot_contenitori
 
 
 async def report_raccolte_byte_buffer(
@@ -69,30 +118,11 @@ async def report_raccolte_byte_buffer(
     # create an excel workbook and sheet
     workbook = load_workbook("doc_templates/report.xlsx")
     sheet = workbook.active
-    sheet["E13"] = 42
-    sheet["E15"] = 420
-    sheet["F15"] = 69
 
     for index, (week, raccolte) in enumerate(raccolte_by_week.items()):
         week_row = BASE_ROW + 2 * index
         sheet[f"C{week_row}"] = week
-
-    # sheet.title = "Resoconto scarico"
-    # sheet.column_dimensions["A"].width = 20
-    # sheet.column_dimensions["B"].width = 20
-    # # write the column headers
-    # sheet.append(["Data", "Codice EER", "N Contenitori", "Peso (kg)"])
-
-    # for raccolta in raccolte:
-    #     sheet.append(
-    #         [
-    #             raccolta.data.strftime("%d/%m/%Y %H:%M"),
-    #             raccolta.codice_eer,
-    #             raccolta.contenitori,
-    #             raccolta.contenitori
-    #             * capacita_contenitori[raccolta.rifiuto.contenitore],
-    #         ]
-    #     )
+        aggregate_week(raccolte, sheet, week_row)
 
     # save the workbook to a bytes buffer
     buffer = BytesIO()
