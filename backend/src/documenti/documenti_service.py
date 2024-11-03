@@ -113,7 +113,6 @@ async def report_raccolte_byte_buffer(
     session: AsyncSession, year: int, month: int
 ) -> BytesIO:
     raccolte_by_week = await weekly_partition(session, year, month)
-    print(raccolte_by_week)
 
     # create an excel workbook and sheet
     workbook = load_workbook("doc_templates/report.xlsx")

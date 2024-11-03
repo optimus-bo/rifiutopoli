@@ -82,13 +82,16 @@ export default function ReportExcel() {
                 label="Anno"
                 onChange={(event) => setYear(Number(event.target.value))}
               >
-                {[2024, 2023].map((year) => {
-                  return (
-                    <MenuItem key={year} value={year}>
-                      {year}
-                    </MenuItem>
-                  );
-                })}
+                {
+                  //TODO: questa lista è da rivedere
+                  [2024, 2023].map((year) => {
+                    return (
+                      <MenuItem key={year} value={year}>
+                        {year}
+                      </MenuItem>
+                    );
+                  })
+                }
               </Select>
             </FormControl>
           </Stack>
