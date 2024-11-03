@@ -30,6 +30,9 @@ export default function RifiutoFancy({ rifiuto }: RifiutoFancyProps) {
         <Typography textAlign="left" fontWeight="bold" color={colore}>
           {rifiuto.codice_eer}
         </Typography>
+        <Typography textAlign="left">
+          Materiale: <b>{rifiuto.materiale}</b>
+        </Typography>
         <Typography textAlign="left">Tipo Contenitore: {rifiuto.contenitore}</Typography>
 
         {pericoloso && (

@@ -7,6 +7,7 @@ from fastapi import (
 )
 from typing import Optional
 from datetime import datetime, timedelta
+from calendar import monthrange
 from .raccolte_schemi import *
 
 
@@ -16,6 +17,18 @@ class RaccoltaInvalida(HTTPException):
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Ogni raccolta di rifiuti deve raccogliere un numero positivo di contenitori di rifiuti",
         )
+
+
+async def find_raccolte_by_month(
+    session: AsyncSession, year: int, month: int, eager_mode: bool = False
+):
+    start_date = datetime(year, month, 1)
+    last_day = monthrange(year, month)[1]
+    end_datetime = datetime(year, month, last_day, 23, 59, 59)
+
+    return await find_raccolte(
+        session, start_date=start_date, end_date=end_datetime, eager_mode=eager_mode
+    )
 
 
 async def find_raccolte(

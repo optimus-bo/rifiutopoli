@@ -10,18 +10,14 @@ from ..db import get_async_session
 router_documenti = APIRouter()
 
 
-@router_documenti.get("/report-excel")
+@router_documenti.get("/report-excel/{year}/{month}")
 async def get_raccolte(
+    year: int,
+    month: int,
     db: AsyncSession = Depends(get_async_session),
-    start_date: Optional[datetime] = Query(
-        None, description="Data di inizio per il report"
-    ),
-    end_date: Optional[datetime] = Query(
-        None, description="Data di fine per il report"
-    ),
 ) -> StreamingResponse:
     async with db as session:
-        buffer = await report_raccolte_byte_buffer(session, start_date, end_date)
+        buffer = await report_raccolte_byte_buffer(session, year, month)
         return StreamingResponse(
             buffer,
             media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",

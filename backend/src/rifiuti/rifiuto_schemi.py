@@ -14,6 +14,7 @@ class Rifiuto(BaseEntity):
     codice_pittogramma: Mapped[str] = mapped_column(String, nullable=True)
     codice_rdr: Mapped[str] = mapped_column(String, nullable=False)
     contenitore: Mapped[str] = mapped_column(String, nullable=False)
+    materiale: Mapped[str] = mapped_column(String, nullable=False)
 
 
 class RifiutoRead(BaseModel):
@@ -23,6 +24,7 @@ class RifiutoRead(BaseModel):
     codice_pittogramma: str
     codice_rdr: str
     contenitore: str
+    materiale: str
 
     class Config:
         orm_mode = True
@@ -33,8 +35,9 @@ class RifiutoCreate(BaseModel):
     codice_eer: str
     codice_rdr: str
     contenitore: str
-    nome: Optional[str] = None
+    materiale: str
     codice_pittogramma: Optional[str] = None
+    nome: Optional[str] = None
 
     class Config:
         orm_mode = True
