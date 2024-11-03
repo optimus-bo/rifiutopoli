@@ -1,11 +1,13 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from openpyxl import load_workbook
 from io import BytesIO
-from datetime import datetime
+from datetime import datetime, timedelta
+from calendar import monthrange
 from collections import defaultdict
 from ..raccolte.raccolte_service import find_raccolte_by_month, Raccolta
 
 
+BASE_ROW = 13
 capacita_contenitori = {
     "FP": 10,
     "TN": 1.5,
@@ -24,10 +26,27 @@ capacita_contenitori = {
 
 
 async def weekly_partition(session: AsyncSession, year: int, month: int):
+    def init_default_dict():
+        raccolte_by_week = defaultdict(list)
+
+        # Get the first and last day of the month
+        start_date = datetime(year, month, 1)
+        last_day = monthrange(year, month)[1]
+        end_datetime = datetime(year, month, last_day)
+
+        # Populate the dictionary with all possible week keys
+        current_date = start_date
+        while current_date <= end_datetime:
+            week_index = current_date.isocalendar()[1]
+            week_key = f"Sett-{week_index}"
+            raccolte_by_week[week_key] = []
+            current_date += timedelta(days=7 - current_date.weekday())
+        return raccolte_by_week
+
     raccolte: list[Raccolta] = await find_raccolte_by_month(
         session, year, month, eager_mode=True
     )
-    raccolte_by_week = defaultdict(list)
+    raccolte_by_week = init_default_dict()
 
     for raccolta in raccolte:
         week_index = raccolta.data.isocalendar()[1]  # ISO week number
@@ -37,7 +56,8 @@ async def weekly_partition(session: AsyncSession, year: int, month: int):
     return dict(raccolte_by_week)
 
 
-BASE_ROW = 13
+def aggregate_week(raccolte: list[Raccolta], sheet, week_row: int):
+    pass
 
 
 async def report_raccolte_byte_buffer(

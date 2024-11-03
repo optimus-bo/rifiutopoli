@@ -24,10 +24,10 @@ async def find_raccolte_by_month(
 ):
     start_date = datetime(year, month, 1)
     last_day = monthrange(year, month)[1]
-    end_date_time = datetime(year, month, last_day, 23, 59, 59)
+    end_datetime = datetime(year, month, last_day, 23, 59, 59)
 
     return await find_raccolte(
-        session, start_date=start_date, end_date=end_date_time, eager_mode=eager_mode
+        session, start_date=start_date, end_date=end_datetime, eager_mode=eager_mode
     )
 
 
