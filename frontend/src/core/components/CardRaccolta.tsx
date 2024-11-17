@@ -10,7 +10,7 @@ export default function CardRaccolta({ raccolta }: CardRaccoltaProps) {
     <Paper sx={{ padding: 2, display: 'flex', border: 1, borderColor: 'primary.main' }}>
       <Stack>
         <Typography textAlign="left" variant="h6">
-          {raccolta.rifiuto.nome}
+          {raccolta.rifiuto.codice_eer}
         </Typography>
         <Typography textAlign="left" variant="h6">
           Codice CER: {raccolta.rifiuto.codice_eer}

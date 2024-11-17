@@ -18,7 +18,7 @@ class RifiutoNotFound(HTTPException):
         )
 
 
-async def find_rifiuto(session: AsyncSession, codice_eer: str):
+async def find_rifiuto(session: AsyncSession, codice_eer: str) -> RifiutoRead:
     result = await session.execute(
         select(Rifiuto).filter(Rifiuto.codice_eer == codice_eer)
     )
@@ -36,7 +36,7 @@ async def find_rifiuti(session: AsyncSession):
 
 async def insert_rifiuto(
     session: AsyncSession, rifiuto: RifiutoCreate, immagine: UploadFile
-):
+) -> RifiutoRead:
     nuovo_rifiuto = Rifiuto(**rifiuto.model_dump())
     # await per start sicuri che questa funzione termini e nuovo_rifiuto.img_src sia popolato
     await store_immagine_rifiuto(immagine, nuovo_rifiuto)

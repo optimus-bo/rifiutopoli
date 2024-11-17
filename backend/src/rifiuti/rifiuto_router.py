@@ -15,13 +15,13 @@ from ..db import get_async_session
 router_rifiuti = APIRouter()
 
 
-@router_rifiuti.get("/rifiuti")
+@router_rifiuti.get("/rifiuti", response_model=list[RifiutoRead])
 async def get_rifiuti(db: AsyncSession = Depends(get_async_session)):
     async with db as session:
         return await find_rifiuti(session)
 
 
-@router_rifiuti.post("/rifiuti")
+@router_rifiuti.post("/rifiuti", response_model=RifiutoRead)
 async def post_rifiuti(
     rifiuto: str = Form(...),
     immagine: UploadFile = File(...),

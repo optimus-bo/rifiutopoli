@@ -30,12 +30,15 @@ export default function RifiutoFancy({ rifiuto }: RifiutoFancyProps) {
         <Typography textAlign="left" fontWeight="bold" color={colore}>
           {rifiuto.codice_eer}
         </Typography>
-        <Typography textAlign="left">Tipo Contenitore: {rifiuto.contenitore}</Typography>
+        <Typography textAlign="left">Contenitore: {rifiuto.contenitore}</Typography>
+        <Typography textAlign="left">RDR: {rifiuto.codice_rdr}</Typography>
 
         {pericoloso && (
           <Stack direction="row" alignItems="center" alignContent="center" spacing={1}>
             <WarningAmberIcon sx={{ color: 'orange' }} />
-            <Typography variant="caption">{rifiuto.codice_pittogramma}</Typography>
+            <Typography variant="caption" sx={{ color: colore }}>
+              {rifiuto.codice_pittogramma}
+            </Typography>
           </Stack>
         )}
 

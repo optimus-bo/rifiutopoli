@@ -1,7 +1,9 @@
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Box, Button, Stack, TextField, Typography } from '@mui/material';
+import { Box, Button, Checkbox, Stack, TextField, Typography } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
 import { useToast } from 'optimus-bo-ui/dist/components/Toast';
 import { useRef, useState } from 'react';
@@ -83,7 +85,26 @@ export default function CreaRifiuto() {
                 required: 'Questo campo è obbligatorio',
               })}
             ></TextField>
-            <TextField label="Codice Pittogramma" {...register('codice_pittogramma')}></TextField>
+            {/* TODO: make a select */}
+            <TextField
+              label="Codice raggruppamento*"
+              {...register('codice_raggruppamento', {
+                required: 'Questo campo è obbligatorio',
+              })}
+            ></TextField>
+            {/* TODO: make a checkbox */}
+            <TextField label="Codice HP" {...register('codice_pittogramma')}></TextField>
+            <TextField label="Unità di misura" {...register('um')}></TextField>
+            <TextField label="Chili per contenitore" {...register('conversione')}></TextField>
+            <Stack direction="row" alignItems="center">
+              <Checkbox
+                // label="Codice raggruppamento*"
+                {...register('sfuso', {
+                  required: 'Questo campo è obbligatorio',
+                })}
+              />
+              <Typography>Sfuso</Typography>
+            </Stack>
 
             <Button
               variant="contained"
@@ -92,6 +113,7 @@ export default function CreaRifiuto() {
                 // triggera l'input file nascosto
                 fileInputRef.current?.click();
               }}
+              startIcon={selectedFile === null ? <CheckBoxOutlineBlankIcon /> : <CheckBoxIcon />}
             >
               Carica Foto
             </Button>
