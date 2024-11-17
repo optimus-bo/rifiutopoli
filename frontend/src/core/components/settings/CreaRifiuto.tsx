@@ -17,7 +17,7 @@ export default function CreaRifiuto() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const { Component, showToast } = useToast({ severity: 'error', text: 'Problema con il server' });
-  const { handleSubmit, register } = useForm<RifiutoCreate>({});
+  const { handleSubmit, register } = useForm<RifiutoCreate>({ defaultValues: { sfuso: false } });
 
   const { mutate } = useMutation({
     mutationFn: async (data: RifiutoCreate) => {
@@ -99,9 +99,7 @@ export default function CreaRifiuto() {
             <Stack direction="row" alignItems="center">
               <Checkbox
                 // label="Codice raggruppamento*"
-                {...register('sfuso', {
-                  required: 'Questo campo è obbligatorio',
-                })}
+                {...register('sfuso', {})}
               />
               <Typography>Sfuso</Typography>
             </Stack>

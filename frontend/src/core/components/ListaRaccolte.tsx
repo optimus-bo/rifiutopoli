@@ -1,3 +1,5 @@
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import { Paper, Stack, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
@@ -30,6 +32,10 @@ export default function ListaRaccolte() {
             <Typography>Unità: {raccolta.quantita}</Typography>
             <Typography>Quando: {format(raccolta.data, 'dd/MM/yyyy HH:mm')}</Typography>
             <Typography>Id operazione: {raccolta.id}</Typography>
+            <Stack direction="row" alignItems="center" alignContent="center" width="100%">
+              {!raccolta.esportato ? <CheckBoxOutlineBlankIcon /> : <CheckBoxIcon />}
+              <Typography>Id operazione: {raccolta.id}</Typography>
+            </Stack>
           </Paper>
         );
       })}

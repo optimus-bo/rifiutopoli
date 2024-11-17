@@ -1,3 +1,5 @@
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import { Card, CardContent, CardMedia, Stack, Typography } from '@mui/material';
 import { BACKEND } from '../../api/backendClient';
@@ -41,6 +43,10 @@ export default function RifiutoFancy({ rifiuto }: RifiutoFancyProps) {
             </Typography>
           </Stack>
         )}
+        <Stack direction="row" alignItems="center" alignContent="center" width="100%">
+          {!rifiuto.sfuso ? <CheckBoxOutlineBlankIcon /> : <CheckBoxIcon />}
+          <Typography>Sfuso</Typography>
+        </Stack>
 
         <RifiutoForm rifiuto={rifiuto} />
       </CardContent>

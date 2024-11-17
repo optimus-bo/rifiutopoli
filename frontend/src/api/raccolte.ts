@@ -8,7 +8,7 @@ export type Raccolta = {
   quantita: number;
   // ISO string
   data: string;
-  id_operatore: number;
+  esportato: boolean;
 };
 
 export type RaccoltaCreate = {
