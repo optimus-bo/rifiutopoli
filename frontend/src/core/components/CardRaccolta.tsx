@@ -16,7 +16,7 @@ export default function CardRaccolta({ raccolta }: CardRaccoltaProps) {
           Codice CER: {raccolta.rifiuto.codice_eer}
         </Typography>
         <Typography variant="h6" textAlign="left">
-          Totale: {raccolta.contenitori}
+          Totale: {raccolta.quantita}
         </Typography>
       </Stack>
       <Box flexGrow={1} />

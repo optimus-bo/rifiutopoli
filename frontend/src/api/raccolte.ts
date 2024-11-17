@@ -5,7 +5,7 @@ export type Raccolta = {
   id: number;
   codice_eer: string;
   rifiuto: Rifiuto;
-  contenitori: number;
+  quantita: number;
   // ISO string
   data: string;
   id_operatore: number;
@@ -13,8 +13,7 @@ export type Raccolta = {
 
 export type RaccoltaCreate = {
   codice_eer: string;
-  contenitori: number;
-  id_operatore: number;
+  quantita: number;
 };
 
 export async function registraRaccolte(raccolte: RaccoltaCreate[]) {

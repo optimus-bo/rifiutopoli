@@ -43,9 +43,8 @@ async def report_raccolte_byte_buffer(
             [
                 raccolta.data.strftime("%d/%m/%Y %H:%M"),
                 raccolta.codice_eer,
-                raccolta.contenitori,
-                raccolta.contenitori
-                * capacita_contenitori[raccolta.rifiuto.contenitore],
+                raccolta.quantita,
+                raccolta.quantita * capacita_contenitori[raccolta.rifiuto.contenitore],
             ]
         )
 

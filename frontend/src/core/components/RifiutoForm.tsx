@@ -1,10 +1,9 @@
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Box, Button, FormControl, InputLabel, MenuItem, Select, Slider, Stack } from '@mui/material';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { Box, Button, Slider, Stack } from '@mui/material';
+import { useMutation } from '@tanstack/react-query';
 import { useToast } from 'optimus-bo-ui/dist/components/Toast';
 import { useState } from 'react';
 import { BACKEND } from '../../api/backendClient';
-import { getOperatori } from '../../api/operatori';
 import { registraSingolaRaccolta } from '../../api/raccolte';
 import { Rifiuto } from '../../api/rifiuti';
 import NumberInput from './NumberInput';
@@ -13,31 +12,18 @@ import PreconfiguredDialog from './PreconfiguredDialog';
 type RifiutoFormProps = {
   rifiuto: Rifiuto;
 };
-//questa è la cosa più stupida che abbia mai dovuto fare
-const emptyIdValue = '';
 
 export default function RifiutoForm({ rifiuto }: RifiutoFormProps) {
   const [numeroContenitori, setNumeroContenitori] = useState<number | null>(null);
   const [open, setOpen] = useState(false);
-  const [idOperatore, setIdOperatore] = useState<number | typeof emptyIdValue>(emptyIdValue);
   const { Component: ToastComponent, showToast } = useToast({});
-
-  const { data: operatori = [] } = useQuery({
-    queryKey: [],
-    queryFn: () => {
-      return getOperatori();
-    },
-  });
 
   const { mutate: eseguiRegistrazione } = useMutation({
     mutationFn: async () => {
-      if (idOperatore !== emptyIdValue) {
-        return registraSingolaRaccolta({
-          codice_eer: rifiuto.codice_eer,
-          contenitori: numeroContenitori ?? 0,
-          id_operatore: idOperatore,
-        });
-      }
+      return registraSingolaRaccolta({
+        codice_eer: rifiuto.codice_eer,
+        quantita: numeroContenitori ?? 0,
+      });
     },
     onSuccess: () => {
       setNumeroContenitori(null);
@@ -53,7 +39,7 @@ export default function RifiutoForm({ rifiuto }: RifiutoFormProps) {
     <Stack spacing={2} marginTop={2}>
       <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
         <NumberInput
-          label="Numero Unità"
+          label={`Numero Unità (${rifiuto.um})`}
           value={numeroContenitori}
           onChange={(newvalue) => setNumeroContenitori(newvalue)}
         />
@@ -83,28 +69,9 @@ export default function RifiutoForm({ rifiuto }: RifiutoFormProps) {
         hideCloseButton
         confirmLabel="Conferma Carico"
         onConfirm={eseguiRegistrazione}
-        disableConfirmButton={idOperatore === emptyIdValue}
       >
         <Stack spacing={2} padding={2} sx={{ width: '100%' }}>
           <Box component="img" src={`${BACKEND}/api/images/mappe/${rifiuto.codice_rdr}`} sx={{ width: '100%' }} />
-
-          <FormControl fullWidth>
-            <InputLabel id="select-label">Operatore</InputLabel>
-            <Select
-              labelId="select-label"
-              value={idOperatore}
-              label="Operatore"
-              onChange={(event) => setIdOperatore(Number(event.target.value))}
-            >
-              {operatori.map((operatore) => {
-                return (
-                  <MenuItem key={operatore.nome} value={operatore.id}>
-                    {operatore.nome}
-                  </MenuItem>
-                );
-              })}
-            </Select>
-          </FormControl>
         </Stack>
       </PreconfiguredDialog>
       {ToastComponent}

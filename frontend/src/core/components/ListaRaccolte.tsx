@@ -27,7 +27,7 @@ export default function ListaRaccolte() {
             <Typography>
               <b>Rifiuto:</b> {raccolta.codice_eer}
             </Typography>
-            <Typography>Unità: {raccolta.contenitori}</Typography>
+            <Typography>Unità: {raccolta.quantita}</Typography>
             <Typography>Quando: {format(raccolta.data, 'dd/MM/yyyy HH:mm')}</Typography>
             <Typography>Id operazione: {raccolta.id}</Typography>
           </Paper>

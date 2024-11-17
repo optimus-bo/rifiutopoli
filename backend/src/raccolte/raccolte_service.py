@@ -44,7 +44,7 @@ async def salva_raccolte(session: AsyncSession, raccolte: list[RaccoltaCreate]):
     for raccolta in raccolte:
         nuova_raccolta = Raccolta(**raccolta.model_dump())
         nuova_raccolta.data = datetime.now()
-        if nuova_raccolta.contenitori <= 0:
+        if nuova_raccolta.quantita <= 0:
             raise RaccoltaInvalida()
 
         session.add(nuova_raccolta)
