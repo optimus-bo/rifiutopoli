@@ -22,6 +22,8 @@ async def find_raccolte(
     session: AsyncSession,
     start_date: Optional[datetime] = None,
     end_date: Optional[datetime] = None,
+    esportato: Optional[bool] = None,
+    aggrega: Optional[bool] = None,
     eager_mode: bool = False,
 ):
     query = select(Raccolta)
@@ -32,6 +34,10 @@ async def find_raccolte(
         # avanza di un giorno per includere le raccolte nel giorno end_date
         end_date = end_date + timedelta(days=1)
         query = query.where(Raccolta.data <= end_date)
+    if esportato is not None:
+        query = query.where(Raccolta.esportato == esportato)
+    if aggrega:
+        pass  # TODO
 
     if eager_mode:
         query = query.options(selectinload(Raccolta.rifiuto))

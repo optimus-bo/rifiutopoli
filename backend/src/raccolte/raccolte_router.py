@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Response, status
+from fastapi import APIRouter, Depends, Query, Response, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from .raccolte_schemi import *
 from .raccolte_service import *
@@ -9,9 +9,17 @@ router_raccolte = APIRouter()
 
 
 @router_raccolte.get("/raccolte")
-async def get_raccolte(db: AsyncSession = Depends(get_async_session)):
+async def get_raccolte(
+    db: AsyncSession = Depends(get_async_session),
+    aggrega: Optional[bool] = Query(
+        None, description="Aggrega i risultati secondo la lettera"
+    ),
+    esportato: Optional[bool] = Query(None, description="Solo esportate/non esportate"),
+):
     async with db as session:
-        return await find_raccolte(session, eager_mode=True)
+        return await find_raccolte(
+            session, aggrega=aggrega, esportato=esportato, eager_mode=True
+        )
 
 
 @router_raccolte.post("/raccolte")
