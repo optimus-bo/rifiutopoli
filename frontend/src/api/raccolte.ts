@@ -11,13 +11,20 @@ export type Raccolta = {
   esportato: boolean;
 };
 
+export type RaccolteAggregate = {
+  codice_eer: string;
+  quantita: number;
+  um: string;
+  codice_raggruppamento: string;
+  codice_pittogramma?: string;
+};
+
 export type RaccoltaCreate = {
   codice_eer: string;
   quantita: number;
 };
 
 export type GetRaccolteParams = {
-  aggrega?: boolean;
   esportato?: boolean;
 };
 
@@ -31,4 +38,8 @@ export async function registraSingolaRaccolta(raccolta: RaccoltaCreate) {
 
 export async function getRaccolte(params?: GetRaccolteParams): Promise<Raccolta[]> {
   return (await backendClient.get('/raccolte', { params: params })).data;
+}
+
+export async function getRaccolteAggregate(params?: GetRaccolteParams): Promise<RaccolteAggregate[]> {
+  return (await backendClient.get('/raccolte-aggregate', { params: params })).data;
 }

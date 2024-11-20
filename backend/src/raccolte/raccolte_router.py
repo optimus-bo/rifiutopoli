@@ -22,6 +22,17 @@ async def get_raccolte(
         )
 
 
+@router_raccolte.get("/raccolte-aggregate", response_model=list[RaccoltaAggregataRead])
+async def get_raccolte(
+    db: AsyncSession = Depends(get_async_session),
+    esportato: Optional[bool] = Query(None, description="Solo esportate/non esportate"),
+):
+    async with db as session:
+        return await find_raccolte_aggregate(
+            session, esportato=esportato, eager_mode=True
+        )
+
+
 @router_raccolte.post("/raccolte")
 async def registra_raccolta(
     raccolte: list[RaccoltaCreate], db: AsyncSession = Depends(get_async_session)

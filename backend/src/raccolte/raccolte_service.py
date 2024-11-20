@@ -1,6 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload
+from sqlalchemy.sql import func
 from fastapi import (
     HTTPException,
     status,
@@ -44,6 +45,38 @@ async def find_raccolte(
 
     result = await session.execute(query)
     return result.scalars().all()
+
+
+async def find_raccolte_aggregate(
+    session: AsyncSession,
+    start_date: Optional[datetime] = None,
+    end_date: Optional[datetime] = None,
+    esportato: bool = None,
+    eager_mode: bool = False,
+):
+    query = (
+        select(
+            Raccolta.codice_eer,
+            func.sum(Raccolta.quantita).label("quantita"),
+            func.min(Raccolta.data).label("min_data"),
+            func.max(Raccolta.data).label("max_data"),
+            Rifiuto.codice_raggruppamento,
+            Rifiuto.um,
+            Rifiuto.codice_pittogramma,
+        )
+        .join(Rifiuto, Rifiuto.codice_eer == Raccolta.codice_eer)
+        .group_by(Raccolta.codice_eer, Rifiuto.codice_raggruppamento)
+    )
+
+    if start_date:
+        query = query.where(Raccolta.data >= start_date)
+    if end_date:
+        query = query.where(Raccolta.data <= end_date)
+    if esportato is not None:
+        query = query.where(Raccolta.esportato == esportato)
+
+    result = await session.execute(query)
+    return result.all()
 
 
 async def salva_raccolte(session: AsyncSession, raccolte: list[RaccoltaCreate]):

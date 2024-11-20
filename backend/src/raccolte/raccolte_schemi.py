@@ -2,6 +2,7 @@ from datetime import datetime
 from pydantic import BaseModel
 from sqlalchemy import DateTime, ForeignKey, Integer, Boolean
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from typing import Optional
 from ..db import BaseEntity
 from ..rifiuti.rifiuto_schemi import Rifiuto, RifiutoRead
 
@@ -23,12 +24,19 @@ class RaccoltaRead(BaseModel):
     quantita: int
     data: datetime
     esportato: bool
-    # TODO: questo non viene ritornato da fixare
     rifiuto: RifiutoRead
 
     class Config:
         orm_mode = True
         from_attributes = True
+
+
+class RaccoltaAggregataRead(BaseModel):
+    codice_eer: str
+    quantita: int
+    um: str
+    codice_raggruppamento: str
+    codice_pittogramma: Optional[str] = None
 
 
 class RaccoltaCreate(BaseModel):
