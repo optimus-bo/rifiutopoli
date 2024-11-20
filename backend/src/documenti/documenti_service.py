@@ -4,7 +4,7 @@ from openpyxl.utils import get_column_letter
 from io import BytesIO
 from typing import Optional
 from datetime import datetime
-from ..raccolte.raccolte_service import find_raccolte_aggregate, Raccolta
+from ..raccolte.raccolte_service import find_raccolte, find_raccolte_aggregate, Raccolta
 
 capacita_contenitori = {
     "FP": 10,
