@@ -1,5 +1,10 @@
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Box,
+  Button,
   Checkbox,
   FormControlLabel,
   LinearProgress,
@@ -12,16 +17,17 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import { Controller, useForm } from 'react-hook-form';
+import { scaricaReportExcel } from '../api/documenti';
 import { getRaccolte, getRaccolteAggregate, Raccolta, RaccolteAggregate } from '../api/raccolte';
 
 function TableRaccolte({ raccolte, isFetching }: { raccolte: Raccolta[]; isFetching: boolean }) {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-        <TableHead>
+        <TableHead sx={{ backgroundColor: 'primary.main' }}>
           <TableRow>
             <TableCell>Esportato</TableCell>
             <TableCell>Data</TableCell>
@@ -63,7 +69,7 @@ function TableRaccolteAggregate({ raccolte, isFetching }: { raccolte: RaccolteAg
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-        <TableHead>
+        <TableHead sx={{ backgroundColor: 'primary.main' }}>
           <TableRow>
             <TableCell>Codice</TableCell>
             <TableCell>HP</TableCell>
@@ -127,24 +133,47 @@ export default function RaccolteScreen() {
     enabled: watchFields.aggrega,
   });
 
+  const { mutate: downloadExcel } = useMutation({
+    mutationFn: async () => {
+      const blob = await scaricaReportExcel();
+      //non ho idea di che faccia sta roba
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'report.xlsx');
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    },
+  });
+
   return (
     <Box>
-      <Stack spacing={0}>
-        <Controller
-          name="aggrega"
-          control={control}
-          render={({ field }) => (
-            <FormControlLabel control={<Checkbox {...field} checked={field.value} />} label="Aggrega" />
-          )}
-        />
-        <Controller
-          name="escludiEsportati"
-          control={control}
-          render={({ field }) => (
-            <FormControlLabel control={<Checkbox {...field} checked={field.value} />} label="Escludi esportati" />
-          )}
-        />
-      </Stack>
+      <Accordion>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>Filtri</AccordionSummary>
+        <AccordionDetails>
+          <Stack spacing={0}>
+            <Controller
+              name="aggrega"
+              control={control}
+              render={({ field }) => (
+                <FormControlLabel control={<Checkbox {...field} checked={field.value} />} label="Aggrega" />
+              )}
+            />
+            <Controller
+              name="escludiEsportati"
+              control={control}
+              render={({ field }) => (
+                <FormControlLabel control={<Checkbox {...field} checked={field.value} />} label="Escludi esportati" />
+              )}
+            />
+
+            <Button fullWidth variant="contained" onClick={() => downloadExcel()}>
+              Genera report
+            </Button>
+          </Stack>
+        </AccordionDetails>
+      </Accordion>
 
       {watchFields.aggrega ? (
         <TableRaccolteAggregate raccolte={raccolteAggregate} isFetching={fetchingAggregate} />

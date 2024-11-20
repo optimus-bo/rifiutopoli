@@ -1,9 +1,10 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from openpyxl import Workbook
+from openpyxl.utils import get_column_letter
 from io import BytesIO
 from typing import Optional
 from datetime import datetime
-from ..raccolte.raccolte_service import find_raccolte, Raccolta
+from ..raccolte.raccolte_service import find_raccolte_aggregate, Raccolta
 
 capacita_contenitori = {
     "FP": 10,
@@ -23,6 +24,50 @@ capacita_contenitori = {
 
 
 async def report_raccolte_byte_buffer(
+    session: AsyncSession,
+    start_date: Optional[datetime] = None,
+    end_date: Optional[datetime] = None,
+    esportato: bool = None,
+) -> BytesIO:
+    raccolte: list[dict] = await find_raccolte_aggregate(
+        session, start_date, end_date, esportato=esportato
+    )
+    # create an excel workbook and sheet
+    workbook = Workbook()
+    sheet = workbook.active
+    sheet.append(["Codice", "HP", "UNIMIS", "QTAMOV", "Raggruppamento"])
+    column_widths = [20, 20, 10, 10, 15]
+    for i, width in enumerate(column_widths, start=1):
+        sheet.column_dimensions[get_column_letter(i)].width = width
+
+    for raccolta in raccolte:
+        (
+            codice_eer,
+            quantita,
+            min_data,
+            max_data,
+            codice_raggruppamento,
+            um,
+            codice_pittogramma,
+        ) = raccolta
+        sheet.append(
+            [
+                codice_eer,
+                codice_pittogramma,
+                um,
+                quantita,
+                codice_raggruppamento,
+            ]
+        )
+
+    # save the workbook to a bytes buffer
+    buffer = BytesIO()
+    workbook.save(buffer)
+    buffer.seek(0)
+    return buffer
+
+
+async def report_custom(
     session: AsyncSession, start_date: Optional[datetime], end_date: Optional[datetime]
 ) -> BytesIO:
     raccolte: list[Raccolta] = await find_raccolte(
