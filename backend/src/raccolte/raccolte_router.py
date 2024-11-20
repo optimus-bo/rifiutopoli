@@ -11,7 +11,7 @@ router_raccolte = APIRouter()
 @router_raccolte.get("/raccolte")
 async def get_raccolte(db: AsyncSession = Depends(get_async_session)):
     async with db as session:
-        return await find_raccolte(session)
+        return await find_raccolte(session, eager_mode=True)
 
 
 @router_raccolte.post("/raccolte")

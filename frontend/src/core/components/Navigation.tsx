@@ -1,3 +1,4 @@
+import DeleteIcon from '@mui/icons-material/Delete';
 import HandymanIcon from '@mui/icons-material/Handyman';
 import HomeIcon from '@mui/icons-material/Home';
 import { BottomNavigation, BottomNavigationAction, Paper } from '@mui/material';
@@ -5,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { routes } from '../routes';
 
-const pagine = [routes.rifiuti, routes.impostazioni];
+const pagine = [routes.raccolte, routes.rifiuti, routes.impostazioni];
 
 export default function Navigation() {
   // parte dall'indice 1 che è la pagina centrale, la home page
@@ -48,6 +49,15 @@ export default function Navigation() {
           backgroundColor: 'primary.main',
         }}
       >
+        <BottomNavigationAction
+          label="Carichi"
+          icon={<DeleteIcon />}
+          sx={{
+            '&.Mui-selected': {
+              color: 'white',
+            },
+          }}
+        />
         <BottomNavigationAction
           label="Home"
           icon={<HomeIcon />}

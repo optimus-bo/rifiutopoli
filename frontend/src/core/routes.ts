@@ -3,6 +3,7 @@ const routes = {
   impostazioni: '/settigns',
   documenti: '/documenti',
   cestino: '/cestino',
+  raccolte: '/raccolte',
 };
 
 export { routes };
