@@ -58,36 +58,15 @@ async def find_raccolte_aggregate(
     query = (
         select(
             Raccolta.codice_eer,
-            case(
-                [(Rifiuto.sfuso == True, None)],  # No aggregation for sfuso rows
-                else_=func.sum(Raccolta.quantita),
-            ).label("quantita"),
-            case(
-                [
-                    (Rifiuto.sfuso == True, Raccolta.data)
-                ],  # Individual date for sfuso rows
-                else_=func.min(Raccolta.data),
-            ).label("min_data"),
-            case(
-                [
-                    (Rifiuto.sfuso == True, Raccolta.data)
-                ],  # Individual date for sfuso rows
-                else_=func.max(Raccolta.data),
-            ).label("max_data"),
+            func.sum(Raccolta.quantita).label("quantita"),
+            func.min(Raccolta.data).label("min_data"),
+            func.max(Raccolta.data).label("max_data"),
             Rifiuto.codice_raggruppamento,
             Rifiuto.um,
             Rifiuto.codice_pittogramma,
         )
         .join(Rifiuto, Rifiuto.codice_eer == Raccolta.codice_eer)
-        .group_by(
-            case(
-                [
-                    (Rifiuto.sfuso == True, Raccolta.id)
-                ],  # Grouping by individual row for sfuso
-                else_=Raccolta.codice_eer,
-            ),
-            Rifiuto.codice_raggruppamento,
-        )
+        .group_by(Raccolta.codice_eer, Rifiuto.codice_raggruppamento)
     )
 
     if start_date:
