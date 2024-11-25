@@ -5,7 +5,6 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useMutation } from '@tanstack/react-query';
 import { Dayjs } from 'dayjs';
 import { useState } from 'react';
-import { scaricaReportExcel } from '../../../api/documenti';
 import { formElementsBorderRadius } from '../../values';
 import PreconfiguredDialog from '../PreconfiguredDialog';
 
@@ -16,15 +15,15 @@ export default function ReportExcel() {
 
   const { mutate: downloadExcel } = useMutation({
     mutationFn: async () => {
-      const blob = await scaricaReportExcel(dataInizio, dataFine);
-      //non ho idea di che faccia sta roba
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', 'report.xlsx');
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
+      // const blob = await scaricaReportExcel(dataInizio, dataFine);
+      // //non ho idea di che faccia sta roba
+      // const url = window.URL.createObjectURL(blob);
+      // const link = document.createElement('a');
+      // link.href = url;
+      // link.setAttribute('download', 'report.xlsx');
+      // document.body.appendChild(link);
+      // link.click();
+      // link.remove();
     },
   });
 

@@ -26,6 +26,8 @@ export type RaccoltaCreate = {
 
 export type GetRaccolteParams = {
   esportato?: boolean;
+  start_date?: string;
+  end_date?: string;
 };
 
 export async function registraRaccolte(raccolte: RaccoltaCreate[]) {
