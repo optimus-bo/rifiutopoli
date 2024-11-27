@@ -1,5 +1,6 @@
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import {
@@ -11,6 +12,7 @@ import {
   Button,
   Checkbox,
   FormControlLabel,
+  IconButton,
   LinearProgress,
   Paper,
   Stack,
@@ -20,54 +22,104 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import dayjs from 'dayjs';
+import { useToast } from 'optimus-bo-ui/dist/components/Toast';
 import { Controller, useForm } from 'react-hook-form';
 import { scaricaReportExcel } from '../api/documenti';
-import { getRaccolte, getRaccolteAggregate, GetRaccolteParams, Raccolta, RaccolteAggregate } from '../api/raccolte';
+import {
+  deleteRaccolta,
+  getRaccolte,
+  getRaccolteAggregate,
+  GetRaccolteParams,
+  Raccolta,
+  RaccolteAggregate,
+} from '../api/raccolte';
 
-function TableRaccolte({ raccolte, isFetching }: { raccolte: Raccolta[]; isFetching: boolean }) {
+function TableRaccolte({
+  raccolte,
+  isFetching,
+  refetch,
+}: {
+  raccolte: Raccolta[];
+  isFetching: boolean;
+  refetch: () => void;
+}) {
+  const { Component, showToast } = useToast({});
+
+  const { mutate } = useMutation({
+    mutationFn: async (vars: { idRaccolta: number; dataRaccolta: string }) => {
+      return deleteRaccolta(vars.idRaccolta, vars.dataRaccolta);
+    },
+    onSuccess: () => {
+      showToast({
+        text: 'Carico eliminato',
+        severity: 'success',
+      });
+      refetch();
+    },
+    onError: () => {
+      showToast({
+        text: 'Qualcosa è andato storto',
+        severity: 'error',
+      });
+    },
+  });
+
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} size="small">
-        <TableHead sx={{ backgroundColor: 'primary.main', color: 'white' }}>
-          <TableRow>
-            <TableCell>Esportato</TableCell>
-            <TableCell>Data</TableCell>
-            <TableCell>Codice</TableCell>
-            <TableCell>HP</TableCell>
-            <TableCell>Quantità</TableCell>
-            <TableCell>Raggruppamento</TableCell>
-          </TableRow>
-        </TableHead>
+    <>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} size="small">
+          <TableHead sx={{ backgroundColor: 'primary.main', color: 'white' }}>
+            <TableRow>
+              <TableCell>Esportato</TableCell>
+              <TableCell>Data</TableCell>
+              <TableCell>Codice</TableCell>
+              <TableCell>HP</TableCell>
+              <TableCell>Quantità</TableCell>
+              <TableCell>Raggruppamento</TableCell>
+              <TableCell></TableCell>
+            </TableRow>
+          </TableHead>
 
-        <TableBody>
-          {isFetching ? (
-            <LinearProgress />
-          ) : (
-            raccolte.map((raccolta) => (
-              <TableRow key={raccolta.codice_eer} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                <TableCell padding="checkbox">
-                  {raccolta.esportato ? <CheckBoxIcon color="success" /> : <CancelIcon color="error" />}
-                </TableCell>
-                <TableCell>{format(raccolta.data, 'dd/MM/yyyy HH:mm')}</TableCell>
-                <TableCell component="th" scope="row">
-                  {raccolta.codice_eer}
-                </TableCell>
-                <TableCell>{raccolta.rifiuto.codice_pittogramma}</TableCell>
-                <TableCell>
-                  {raccolta.quantita} ({raccolta.rifiuto.um})
-                </TableCell>
-                <TableCell>{raccolta.rifiuto.codice_raggruppamento}</TableCell>
-              </TableRow>
-            ))
-          )}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          <TableBody>
+            {isFetching ? (
+              <LinearProgress />
+            ) : (
+              raccolte.map((raccolta) => (
+                <TableRow key={raccolta.codice_eer} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                  <TableCell padding="checkbox">
+                    {raccolta.esportato ? <CheckBoxIcon color="success" /> : <CancelIcon color="error" />}
+                  </TableCell>
+                  <TableCell>{format(raccolta.data, 'dd/MM/yyyy HH:mm')}</TableCell>
+                  <TableCell component="th" scope="row">
+                    {raccolta.codice_eer}
+                  </TableCell>
+                  <TableCell>{raccolta.rifiuto.codice_pittogramma}</TableCell>
+                  <TableCell>
+                    {raccolta.quantita} ({raccolta.rifiuto.um})
+                  </TableCell>
+                  <TableCell>{raccolta.rifiuto.codice_raggruppamento}</TableCell>
+                  <Tooltip title="Cancella">
+                    <TableCell>
+                      <IconButton onClick={() => mutate({ idRaccolta: raccolta.id, dataRaccolta: raccolta.data })}>
+                        <DeleteForeverIcon />
+                      </IconButton>
+                    </TableCell>
+                  </Tooltip>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+
+      {Component}
+    </>
   );
 }
 
@@ -135,7 +187,11 @@ export default function RaccolteScreen() {
   const watchFields = watch();
 
   //TODO: clean
-  const { data: raccolte = [], isFetching: fetchingRaccolte } = useQuery({
+  const {
+    data: raccolte = [],
+    isFetching: fetchingRaccolte,
+    refetch,
+  } = useQuery({
     queryKey: [
       'raccolte',
       watchFields.aggrega,
@@ -252,7 +308,7 @@ export default function RaccolteScreen() {
       {watchFields.aggrega ? (
         <TableRaccolteAggregate raccolte={raccolteAggregate} isFetching={fetchingAggregate} />
       ) : (
-        <TableRaccolte raccolte={raccolte} isFetching={fetchingRaccolte} />
+        <TableRaccolte raccolte={raccolte} isFetching={fetchingRaccolte} refetch={refetch} />
       )}
     </Box>
   );

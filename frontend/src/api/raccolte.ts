@@ -1,3 +1,4 @@
+import { getYear, parseISO } from 'date-fns';
 import { backendClient } from './backendClient';
 import { Rifiuto } from './rifiuti';
 
@@ -44,4 +45,9 @@ export async function getRaccolte(params?: GetRaccolteParams): Promise<Raccolta[
 
 export async function getRaccolteAggregate(params?: GetRaccolteParams): Promise<RaccolteAggregate[]> {
   return (await backendClient.get('/raccolte-aggregate', { params: params })).data;
+}
+
+export async function deleteRaccolta(id: number, data: string) {
+  const anno = getYear(parseISO(data));
+  return (await backendClient.delete(`/raccolte/${anno}/${id}`)).data;
 }

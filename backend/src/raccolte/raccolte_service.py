@@ -1,3 +1,4 @@
+from sqlalchemy import delete, extract
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload
@@ -91,4 +92,14 @@ async def salva_raccolte(session: AsyncSession, raccolte: list[RaccoltaCreate]):
 
         session.add(nuova_raccolta)
 
+    await session.commit()
+
+
+async def elimina_raccolta(session: AsyncSession, anno: int, id: int):
+    stmt = (
+        delete(Raccolta)
+        .where(extract("year", Raccolta.data) == anno)
+        .where(Raccolta.id == id)
+    )
+    await session.execute(stmt)
     await session.commit()

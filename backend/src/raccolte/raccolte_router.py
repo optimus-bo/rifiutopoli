@@ -53,3 +53,13 @@ async def registra_raccolta(
     async with db as session:
         await salva_raccolte(session, raccolte)
         return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+@router_raccolte.delete("/raccolte/{anno}/{id}")
+async def delete_raccolta(
+    id: int,
+    anno: int,
+    db: AsyncSession = Depends(get_async_session),
+):
+    async with db as session:
+        await elimina_raccolta(session, anno, id)
