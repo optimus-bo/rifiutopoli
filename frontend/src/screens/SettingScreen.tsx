@@ -1,12 +1,26 @@
+import SettingsIcon from '@mui/icons-material/Settings';
 import { Stack } from '@mui/material';
+import ListaRaccolte from '../core/components/ListaRaccolte';
+import PreconfiguredAccordion from '../core/components/PreconfiguredAccordion';
 import CreaRifiuto from '../core/components/settings/CreaRifiuto';
-import ReportExcel from '../core/components/settings/ReportExcel';
 
 export default function SettingScreen() {
   return (
-    <Stack direction="column" spacing={2} margin={3}>
-      <CreaRifiuto />
-      <ReportExcel />
+    <Stack direction="column" spacing={5} margin={3}>
+      <PreconfiguredAccordion
+        summary={
+          <>
+            <SettingsIcon /> Impostazioni
+          </>
+        }
+        actions={
+          <Stack spacing={1} sx={{ width: '100%' }}>
+            <CreaRifiuto />
+          </Stack>
+        }
+      />
+
+      <ListaRaccolte />
     </Stack>
   );
 }

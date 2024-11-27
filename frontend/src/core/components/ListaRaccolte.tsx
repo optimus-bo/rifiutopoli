@@ -1,13 +1,9 @@
+import ArticleIcon from '@mui/icons-material/Article';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import {
-  Accordion,
-  AccordionActions,
-  AccordionDetails,
-  AccordionSummary,
   Box,
   Button,
   Checkbox,
@@ -30,7 +26,7 @@ import { format } from 'date-fns';
 import dayjs from 'dayjs';
 import { useToast } from 'optimus-bo-ui/dist/components/Toast';
 import { Controller, useForm } from 'react-hook-form';
-import { scaricaReportExcel } from '../api/documenti';
+import { scaricaReportExcel } from '../../api/documenti';
 import {
   deleteRaccolta,
   getRaccolte,
@@ -38,7 +34,8 @@ import {
   GetRaccolteParams,
   Raccolta,
   RaccolteAggregate,
-} from '../api/raccolte';
+} from '../../api/raccolte';
+import PreconfiguredAccordion from './PreconfiguredAccordion';
 
 function TableRaccolte({
   raccolte,
@@ -172,7 +169,7 @@ function mapFormToQuery(watchFields: {
   };
 }
 
-export default function RaccolteScreen() {
+export default function ListaRaccolte() {
   const { control, watch } = useForm<{
     aggrega: boolean;
     escludiEsportati: boolean;
@@ -234,14 +231,18 @@ export default function RaccolteScreen() {
 
   return (
     <Box>
-      <Accordion sx={{ marginBottom: 1, borderRadius: 2 }}>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          sx={{ backgroundColor: 'primary.main', color: 'white', borderRadius: 2 }}
-        >
-          <FilterListIcon /> Filtri
-        </AccordionSummary>
-        <AccordionDetails>
+      <PreconfiguredAccordion
+        summary={
+          <>
+            <FilterListIcon /> Filtri
+          </>
+        }
+        actions={
+          <Button fullWidth variant="contained" onClick={() => downloadExcel()} endIcon={<ArticleIcon />}>
+            Genera report
+          </Button>
+        }
+        details={
           <Stack spacing={0}>
             <Controller
               name="aggrega"
@@ -295,15 +296,9 @@ export default function RaccolteScreen() {
                 )}
               />
             </Stack>
-
-            <AccordionActions>
-              <Button fullWidth variant="contained" onClick={() => downloadExcel()}>
-                Genera report
-              </Button>
-            </AccordionActions>
           </Stack>
-        </AccordionDetails>
-      </Accordion>
+        }
+      />
 
       {watchFields.aggrega ? (
         <TableRaccolteAggregate raccolte={raccolteAggregate} isFetching={fetchingAggregate} />

@@ -8,7 +8,6 @@ import Layout from './core/Layout';
 import { routes } from './core/routes';
 import { formElementsBorderRadius } from './core/values';
 import MainScreen from './screens/MainScreen';
-import RaccolteScreen from './screens/RaccolteScreen';
 import SettingScreen from './screens/SettingScreen';
 
 const theme = createTheme({
@@ -49,7 +48,6 @@ function App() {
                 <Routes>
                   <Route path={routes.rifiuti} element={<MainScreen />} />
                   <Route path={routes.impostazioni} element={<SettingScreen />} />
-                  <Route path={routes.raccolte} element={<RaccolteScreen />} />
                 </Routes>
               </Layout>
             </OptimusUiApp>
