@@ -18,6 +18,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TableSortLabel,
   Tooltip,
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -25,6 +26,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import dayjs from 'dayjs';
 import { useToast } from 'optimus-bo-ui/dist/components/Toast';
+import { useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { scaricaReportExcel } from '../../api/documenti';
 import {
@@ -46,6 +48,8 @@ function TableRaccolte({
   isFetching: boolean;
   refetch: () => void;
 }) {
+  const [ascending, setAscending] = useState(true);
+  const [sortBy, setSortBy] = useState<keyof Raccolta>('codice_eer');
   const { Component, showToast } = useToast({});
 
   const { mutate } = useMutation({
@@ -67,18 +71,57 @@ function TableRaccolte({
     },
   });
 
+  const visibleRows = useMemo(
+    () =>
+      [...raccolte].sort((raccoltaA, raccoltaB) => {
+        const valueA = raccoltaA[sortBy];
+        const valueB = raccoltaB[sortBy];
+
+        if (typeof valueA === 'number' && typeof valueB === 'number') {
+          return valueA - valueB; // Numeric comparison
+        } else if (typeof valueA === 'string' && typeof valueB === 'string') {
+          return valueA.localeCompare(valueB); // String comparison
+        } else if (valueA instanceof Date && valueB instanceof Date) {
+          return valueA.getTime() - valueB.getTime(); // Date comparison
+        } else {
+          return 0; // Default case (if types don't match or are unsupported)
+        }
+      }),
+    [sortBy]
+  );
+
+  const asd = [
+    { key: 'esportato', label: 'Esportato' },
+    { key: 'data', label: 'Data' },
+    { key: 'codice_eer', label: 'Codice' },
+    { key: 'codice_eer', label: 'HP' },
+    { key: 'quantita', label: 'Quantità' },
+    { key: 'codice_eer', label: 'Raggruppamento' },
+  ];
   return (
     <>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} size="small">
           <TableHead sx={{ backgroundColor: 'primary.main', color: 'white' }}>
             <TableRow>
-              <TableCell>Esportato</TableCell>
-              <TableCell>Data</TableCell>
-              <TableCell>Codice</TableCell>
-              <TableCell>HP</TableCell>
-              <TableCell>Quantità</TableCell>
-              <TableCell>Raggruppamento</TableCell>
+              {asd.map((a, idx) => {
+                return (
+                  <TableCell key={idx}>
+                    <TableSortLabel
+                      active={sortBy === a.key}
+                      direction={ascending ? 'asc' : 'desc'}
+                      onClick={() => {
+                        setSortBy(a.key as keyof Raccolta);
+                        setAscending(!ascending);
+                      }}
+                    >
+                      {a.label}
+                    </TableSortLabel>
+                  </TableCell>
+                );
+              })}
+
+              {/* extra colonna per il bottone di rimozione */}
               <TableCell></TableCell>
             </TableRow>
           </TableHead>
@@ -87,7 +130,7 @@ function TableRaccolte({
             {isFetching ? (
               <LinearProgress />
             ) : (
-              raccolte.map((raccolta) => (
+              visibleRows.map((raccolta) => (
                 <TableRow key={raccolta.codice_eer} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                   <TableCell padding="checkbox">
                     {raccolta.esportato ? <CheckBoxIcon color="success" /> : <CancelIcon color="error" />}

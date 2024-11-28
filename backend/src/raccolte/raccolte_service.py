@@ -55,29 +55,45 @@ async def find_raccolte_aggregate(
     esportato: bool = None,
     eager_mode: bool = False,
 ):
-    # TODO: non group by gli sfusi
-    query = (
+    grouped_query = (
         select(
             Raccolta.codice_eer,
             func.sum(Raccolta.quantita).label("quantita"),
-            func.min(Raccolta.data).label("min_data"),
-            func.max(Raccolta.data).label("max_data"),
+            # func.min(Raccolta.data).label("min_data"),
+            # func.max(Raccolta.data).label("max_data"),
             Rifiuto.codice_raggruppamento,
             Rifiuto.um,
             Rifiuto.codice_pittogramma,
         )
         .join(Rifiuto, Rifiuto.codice_eer == Raccolta.codice_eer)
+        .where(Rifiuto.sfuso == False)
         .group_by(Raccolta.codice_eer, Rifiuto.codice_raggruppamento)
+    )
+    ungrouped_query = (
+        select(
+            Raccolta.codice_eer,
+            Raccolta.quantita,
+            Rifiuto.codice_raggruppamento,
+            Rifiuto.um,
+            Rifiuto.codice_pittogramma,
+        )
+        .join(Rifiuto, Rifiuto.codice_eer == Raccolta.codice_eer)
+        .where(Rifiuto.sfuso)
     )
 
     if start_date:
-        query = query.where(Raccolta.data >= start_date)
+        grouped_query = grouped_query.where(Raccolta.data >= start_date)
+        ungrouped_query = ungrouped_query.where(Raccolta.data >= start_date)
     if end_date:
         # avanza di un giorno per includere le raccolte nel giorno end_date
         end_date = end_date + timedelta(days=1)
+        grouped_query = grouped_query.where(Raccolta.data < end_date)
+        ungrouped_query = ungrouped_query.where(Raccolta.data < end_date)
     if esportato is not None:
-        query = query.where(Raccolta.esportato == esportato)
+        grouped_query = grouped_query.where(Raccolta.esportato == esportato)
+        ungrouped_query = ungrouped_query.where(Raccolta.esportato == esportato)
 
+    query = grouped_query.union_all(ungrouped_query)
     result = await session.execute(query)
     return result.all()
 
