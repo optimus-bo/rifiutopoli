@@ -3,6 +3,7 @@ import { Stack } from '@mui/material';
 import ListaRaccolte from '../core/components/ListaRaccolte';
 import PreconfiguredAccordion from '../core/components/PreconfiguredAccordion';
 import CreaRifiuto from '../core/components/settings/CreaRifiuto';
+import ModificaRifiuto from '../core/components/settings/ModificaRifiuto';
 
 export default function SettingScreen() {
   return (
@@ -16,6 +17,7 @@ export default function SettingScreen() {
         actions={
           <Stack spacing={1} sx={{ width: '100%' }}>
             <CreaRifiuto />
+            <ModificaRifiuto />
           </Stack>
         }
       />

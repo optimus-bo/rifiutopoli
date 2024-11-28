@@ -24,6 +24,17 @@ export type RifiutoCreate = {
   contenitore: string;
 };
 
+export type RifiutoUpdate = {
+  um?: string;
+  conversione?: number;
+  sfuso?: boolean;
+  codice_raggruppamento?: string;
+  // img_src: string;
+  codice_pittogramma?: string;
+  codice_rdr?: string;
+  contenitore?: string;
+};
+
 export async function registraRifiuto(rifiuto: RifiutoCreate, immagine: File) {
   const formData = new FormData();
   formData.append('immagine', immagine);
@@ -33,4 +44,8 @@ export async function registraRifiuto(rifiuto: RifiutoCreate, immagine: File) {
 
 export async function getRifiuti(): Promise<Rifiuto[]> {
   return (await backendClient.get('/rifiuti')).data;
+}
+
+export async function updateRifiuto(rifiuto: RifiutoUpdate): Promise<Rifiuto> {
+  return (await backendClient.patch('/rifiuti', rifiuto)).data;
 }
