@@ -51,3 +51,16 @@ async def remove_rifiuto(session: AsyncSession, codice_eer: str):
     rifiuto = await find_rifiuto(session, codice_eer)
     await session.delete(rifiuto)
     await session.commit()
+
+
+async def update_rifiuto(
+    session: AsyncSession, codice_eer: str, rifiuto_update: RifiutoUpdate
+):
+    rifiuto = await find_rifiuto(session, codice_eer)
+    update_data = rifiuto_update.model_dump(exclude_unset=True)
+    for field, value in update_data.items():
+        setattr(rifiuto, field, value)
+
+    await session.commit()
+    await session.refresh(rifiuto)
+    return rifiuto

@@ -36,7 +36,7 @@ export default function RifiutoAnagrafica({ open, onClose, rifiuto }: RifiutoAna
   const { mutate } = useMutation({
     mutationFn: async (data: RifiutoCreate) => {
       if (hasDefault) {
-        return updateRifiuto(data);
+        return updateRifiuto(rifiuto.codice_eer, data);
       } else if (!hasDefault && selectedFile !== null) {
         return registraRifiuto(data, selectedFile);
       }
@@ -76,7 +76,7 @@ export default function RifiutoAnagrafica({ open, onClose, rifiuto }: RifiutoAna
         onClose={onClose}
         title={hasDefault ? `Aggiorna ${rifiuto.codice_eer}` : 'Registra un nuovo rifiuto'}
         onConfirm={() => formSubmit()}
-        confirmLabel="Registra"
+        confirmLabel={hasDefault ? 'Aggiorna' : 'Registra'}
       >
         <Box sx={{ maxWidth: 1200 }}>
           <Typography marginBottom={3}>Compila il modulo con le informazioni del riuto</Typography>
@@ -133,7 +133,7 @@ export default function RifiutoAnagrafica({ open, onClose, rifiuto }: RifiutoAna
                 >
                   Carica Foto
                 </Button>
-                /* file input nascosto attivato dal bottone sopra */
+                {/* file input nascosto attivato dal bottone sopra */}
                 <input
                   type="file"
                   ref={fileInputRef}

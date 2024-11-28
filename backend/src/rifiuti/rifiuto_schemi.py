@@ -42,4 +42,10 @@ class RifiutoCreate(RifiutoAPI):
 
 
 class RifiutoUpdate(BaseModel):
-    pass
+    sfuso: Optional[bool] = None
+    codice_raggruppamento: Optional[str] = None
+    codice_rdr: Optional[str] = None
+    contenitore: Optional[str] = None
+    um: Optional[str] = None
+    conversione: Optional[float] = None
+    codice_pittogramma: Optional[str] = None

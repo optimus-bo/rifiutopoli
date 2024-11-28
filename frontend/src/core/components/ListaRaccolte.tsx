@@ -71,7 +71,7 @@ function TableRaccolte({
     },
   });
 
-  const visibleRows = useMemo(
+  const sorteRows = useMemo(
     () =>
       [...raccolte].sort((raccoltaA, raccoltaB) => {
         const valueA = raccoltaA[sortBy];
@@ -87,10 +87,9 @@ function TableRaccolte({
           return 0; // Default case (if types don't match or are unsupported)
         }
       }),
-    [sortBy]
+    [raccolte, sortBy]
   );
-
-  const asd = [
+  const columns = [
     { key: 'esportato', label: 'Esportato' },
     { key: 'data', label: 'Data' },
     { key: 'codice_eer', label: 'Codice' },
@@ -98,24 +97,25 @@ function TableRaccolte({
     { key: 'quantita', label: 'Quantità' },
     { key: 'codice_eer', label: 'Raggruppamento' },
   ];
+
   return (
     <>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} size="small">
           <TableHead sx={{ backgroundColor: 'primary.main', color: 'white' }}>
             <TableRow>
-              {asd.map((a, idx) => {
+              {columns.map((column, idx) => {
                 return (
                   <TableCell key={idx}>
                     <TableSortLabel
-                      active={sortBy === a.key}
+                      active={sortBy === column.key}
                       direction={ascending ? 'asc' : 'desc'}
                       onClick={() => {
-                        setSortBy(a.key as keyof Raccolta);
+                        setSortBy(column.key as keyof Raccolta);
                         setAscending(!ascending);
                       }}
                     >
-                      {a.label}
+                      {column.label}
                     </TableSortLabel>
                   </TableCell>
                 );
@@ -130,8 +130,8 @@ function TableRaccolte({
             {isFetching ? (
               <LinearProgress />
             ) : (
-              visibleRows.map((raccolta) => (
-                <TableRow key={raccolta.codice_eer} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+              sorteRows.map((raccolta, idx) => (
+                <TableRow key={idx} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                   <TableCell padding="checkbox">
                     {raccolta.esportato ? <CheckBoxIcon color="success" /> : <CancelIcon color="error" />}
                   </TableCell>

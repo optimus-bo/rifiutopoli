@@ -46,6 +46,6 @@ export async function getRifiuti(): Promise<Rifiuto[]> {
   return (await backendClient.get('/rifiuti')).data;
 }
 
-export async function updateRifiuto(rifiuto: RifiutoUpdate): Promise<Rifiuto> {
-  return (await backendClient.patch('/rifiuti', rifiuto)).data;
+export async function updateRifiuto(codice_eer: string, rifiuto: RifiutoUpdate): Promise<Rifiuto> {
+  return (await backendClient.patch(`/rifiuti/${codice_eer}`, rifiuto)).data;
 }

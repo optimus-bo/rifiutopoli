@@ -39,3 +39,13 @@ async def delete_rifiuto(
 ):
     async with db as session:
         return await remove_rifiuto(session, codice_eer)
+
+
+@router_rifiuti.patch("/rifiuti/{codice_eer}")
+async def delete_rifiuto(
+    codice_eer: str,
+    rifiuto: RifiutoUpdate,
+    db: AsyncSession = Depends(get_async_session),
+):
+    async with db as session:
+        await update_rifiuto(session, codice_eer, rifiuto)
