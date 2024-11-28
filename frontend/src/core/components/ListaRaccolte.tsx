@@ -270,6 +270,9 @@ export default function ListaRaccolte() {
       link.click();
       link.remove();
     },
+    onSuccess: () => {
+      refetch();
+    },
   });
 
   return (

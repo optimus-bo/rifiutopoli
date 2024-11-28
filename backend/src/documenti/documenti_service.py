@@ -4,7 +4,12 @@ from openpyxl.utils import get_column_letter
 from io import BytesIO
 from typing import Optional
 from datetime import datetime
-from ..raccolte.raccolte_service import find_raccolte, find_raccolte_aggregate, Raccolta
+from ..raccolte.raccolte_service import (
+    find_raccolte,
+    find_raccolte_aggregate,
+    segna_raccolte_esporate,
+    Raccolta,
+)
 
 capacita_contenitori = {
     "FP": 10,
@@ -44,8 +49,6 @@ async def report_raccolte_byte_buffer(
         (
             codice_eer,
             quantita,
-            min_data,
-            max_data,
             codice_raggruppamento,
             um,
             codice_pittogramma,
@@ -64,6 +67,8 @@ async def report_raccolte_byte_buffer(
     buffer = BytesIO()
     workbook.save(buffer)
     buffer.seek(0)
+    await segna_raccolte_esporate(session, start_date, end_date, esportato=esportato)
+
     return buffer
 
 

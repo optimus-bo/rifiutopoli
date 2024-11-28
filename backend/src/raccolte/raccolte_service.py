@@ -1,4 +1,4 @@
-from sqlalchemy import delete, extract
+from sqlalchemy import delete, extract, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload
@@ -118,4 +118,25 @@ async def elimina_raccolta(session: AsyncSession, anno: int, id: int):
         .where(Raccolta.id == id)
     )
     await session.execute(stmt)
+    await session.commit()
+
+
+async def segna_raccolte_esporate(
+    session: AsyncSession,
+    start_date: Optional[datetime] = None,
+    end_date: Optional[datetime] = None,
+    esportato: bool = None,
+):
+    query = update(Raccolta).values(esportato=True)
+
+    if start_date:
+        query = query.where(Raccolta.data >= start_date)
+    if end_date:
+        # avanza di un giorno per includere le raccolte nel giorno end_date
+        end_date = end_date + timedelta(days=1)
+        query = query.where(Raccolta.data < end_date)
+    if esportato is not None:
+        query = query.where(Raccolta.esportato == esportato)
+
+    await session.execute(query)
     await session.commit()
